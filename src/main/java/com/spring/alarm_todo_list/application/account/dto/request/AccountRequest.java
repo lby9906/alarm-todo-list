@@ -2,9 +2,11 @@ package com.spring.alarm_todo_list.application.account.dto.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public class AccountRequest {
 
     @NotBlank(message="이메일은 필수값입니다.")
