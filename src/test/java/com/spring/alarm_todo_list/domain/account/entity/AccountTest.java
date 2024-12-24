@@ -19,7 +19,10 @@ class AccountTest {
         Account createAccount = Account.of(email, nickname, phoneNumber, password);
 
         //then
+        assertThat(createAccount.getEmail()).isEqualTo(email);
+        assertThat(createAccount.getNickName()).isEqualTo(nickname);
         assertThat(createAccount.getPhoneNumber()).isEqualTo(phoneNumber);
+        assertThat(createAccount.getPassword()).isEqualTo(password);
     }
 
 }
