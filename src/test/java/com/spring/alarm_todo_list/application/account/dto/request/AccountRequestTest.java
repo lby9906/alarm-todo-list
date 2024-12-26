@@ -46,7 +46,7 @@ class AccountRequestTest {
 
     @Test
     @DisplayName("이메일을 입력 할 경우 예외가 발생하지 않는다.")
-    public void notOccurEmailBlankException() {
+    public void notOccurEmailSuccessException() {
         //given
         String email = "test@test.com";
         String nickName = "test";
@@ -130,7 +130,7 @@ class AccountRequestTest {
 
     @Test
     @DisplayName("닉네임을 입력 할 경우 예외가 발생하지 않는다.")
-    public void notOccurNickNameBlankException() {
+    public void notOccurNickNameSuccessException() {
         //given
         String email = "test@test.com";
         String nickName = "test";
@@ -172,7 +172,7 @@ class AccountRequestTest {
 
     @Test
     @DisplayName("핸드폰 번호를 입력 할 경우 예외가 발생하지 않는다.")
-    public void notOccurPhoneNumberBlankException() {
+    public void notOccurPhoneNumberSuccessException() {
         //given
         String email = "test@test.com";
         String nickName = "test";
@@ -214,7 +214,7 @@ class AccountRequestTest {
 
     @Test
     @DisplayName("비밀번호를 입력 할 경우 예외가 발생하지 않는다.")
-    public void notOccurPasswordBlankException() {
+    public void notOccurPasswordSuccessException() {
         //given
         String email = "test@test.com";
         String nickName = "test";
