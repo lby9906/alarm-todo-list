@@ -30,8 +30,8 @@ class BoardRepositoryTest {
     }
 
     @Test
-    @DisplayName("Todo 생성 후 id로 일정을 정상적으로 찾는다.")
-    public void findByIdSuccess() {
+    @DisplayName("일정을 정상적으로 저장한다.")
+    public void saveTodoSuccess() {
         //given
         Account account = Account.of("test@test.com", "test", "010-1234-1234", "0000");
 
@@ -44,16 +44,16 @@ class BoardRepositoryTest {
         Board board = Board.of(title, content, boardDate, boardTime, boardType, account);
 
         //when
-        boardRepository.save(board);
+        Board savedBoard = boardRepository.save(board);
 
         //then
-        Optional<Board> find = boardRepository.findById(board.getId());
-        assertThat(find).isPresent();
-        assertThat(find.get().getTitle()).isEqualTo(title);
-        assertThat(find.get().getContent()).isEqualTo(content);
-        assertThat(find.get().getBoardDate()).isEqualTo(boardDate);
-        assertThat(find.get().getBoardTime()).isEqualTo(boardTime);
-        assertThat(find.get().getBoardType()).isEqualTo(boardType);
-        assertThat(find.get().getAccount()).isEqualTo(account);
+        assertThat(savedBoard).isNotNull();
+        assertThat(savedBoard.getId()).isNotNull();
+        assertThat(savedBoard.getTitle()).isEqualTo(title);
+        assertThat(savedBoard.getContent()).isEqualTo(content);
+        assertThat(savedBoard.getBoardDate()).isEqualTo(boardDate);
+        assertThat(savedBoard.getBoardTime()).isEqualTo(boardTime);
+        assertThat(savedBoard.getBoardType()).isEqualTo(boardType);
+        assertThat(savedBoard.getAccount()).isEqualTo(account);
     }
 }

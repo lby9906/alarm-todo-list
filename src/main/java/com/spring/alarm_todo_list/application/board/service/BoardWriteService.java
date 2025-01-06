@@ -21,7 +21,7 @@ public class BoardWriteService {
     private final BoardRepository boardRepository;
 
     public String create(Long accountId, BoardRequest boardRequest) {
-        Account account = accountRepository.findById(accountId).orElseThrow(() -> new AlarmTodoListException(ErrorCode.NOT_FOUNT_ACCOUNT));
+        Account account = accountRepository.findById(accountId).orElseThrow(() -> new AlarmTodoListException(ErrorCode.NOT_FOUND_ACCOUNT));
 
         Board board = Board.of(boardRequest.getTitle(), boardRequest.getContent(), boardRequest.getBoardDate(), boardRequest.getBoardTime(),
                 BoardType.TODO, account);

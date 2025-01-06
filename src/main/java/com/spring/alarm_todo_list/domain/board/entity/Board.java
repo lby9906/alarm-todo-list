@@ -16,9 +16,10 @@ import java.time.LocalTime;
 @NoArgsConstructor
 public class Board extends BaseEntity {
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 500)
     private String title;
 
+    @Column(length = 500)
     private String content;
 
     @Column(nullable = false)
