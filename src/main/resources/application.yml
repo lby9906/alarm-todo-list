@@ -14,3 +14,8 @@ spring:
     properties:
       hibernate:
         show_sql: true
+
+coolsms:
+  apiKey: ${SMS_API_KEY}
+  secretKey: ${SMS_SECRET_KEY}
+  phoneNumber: ${FROM_PHONE_NUMBER}
