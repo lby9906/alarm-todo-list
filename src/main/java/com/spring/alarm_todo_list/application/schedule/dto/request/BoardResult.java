@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public interface BoardResult {
-
     String getTitle();
 
     LocalDate getBoardDate();

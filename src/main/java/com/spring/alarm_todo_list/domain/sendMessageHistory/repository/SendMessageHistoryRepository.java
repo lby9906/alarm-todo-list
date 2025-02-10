@@ -15,11 +15,11 @@ import java.util.List;
 public interface SendMessageHistoryRepository extends JpaRepository<SendMessageHistory, Long> {
 
     @Query(value = """
-        select smh.id AS sendMessageHistoryId, b.id as boardId, send_message_history_type as sendHistoryType, fail_count AS failCount,
-        b.title as title, b.board_date as boardDate, b.board_time AS boardTime, a.phone_number as userPhoneNumber
-        from send_message_history smh
+        SELECT smh.id AS sendMessageHistoryId, b.id AS boardId, send_message_history_type AS sendHistoryType, fail_count AS failCount,
+        b.title AS title, b.board_date AS boardDate, b.board_time AS boardTime, a.phone_number AS userPhoneNumber
+        FROM send_message_history smh
         INNER JOIN board b ON smh.board_id = b.id INNER JOIN account a ON b.account_id = a.id
-        where date_format(smh.created_At, '%Y-%m-%d') = :nowDate
+        WHERE DATE_FORMAT(smh.created_At, '%Y-%m-%d') = :nowDate
     """,nativeQuery = true)
     List<ScheduleRequest> findAllByCurrentDate(@Param("nowDate") LocalDate nowDate);
 

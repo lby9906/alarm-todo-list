@@ -8,6 +8,7 @@ import java.time.LocalTime;
 
 public interface ScheduleRequest {
     Long getSendMessageHistoryId();
+
     String getUserPhoneNumber();
 
     String getTitle();
