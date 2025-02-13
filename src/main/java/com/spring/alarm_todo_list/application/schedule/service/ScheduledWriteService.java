@@ -71,8 +71,8 @@ public class ScheduledWriteService {
 
     public void sendTodoSchedule(List<BoardResult> pendingSendList, List<ScheduleRequest> failHistory) {
         DefaultMessageService messageService = NurigoApp.INSTANCE.initialize(apiKey, apiSecretKey, "https://api.coolsms.co.kr");
-        messagePendingSendList(pendingSendList, messageService);
-        messageFailHistorySendList(failHistory, messageService);
+        sendMessagePendingList(pendingSendList, messageService);
+        sendMessageFailHistoryList(failHistory, messageService);
     }
 
     private Message createMessage(String userPhoneNumber, LocalDate boardDate, LocalTime boardTime, String title) {
