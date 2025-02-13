@@ -83,7 +83,7 @@ public class ScheduledWriteService {
         return message;
     }
 
-    private void messageFailHistorySendList(List<ScheduleRequest> failHistory, DefaultMessageService messageService) {
+    private void sendMessageFailHistoryList(List<ScheduleRequest> failHistory, DefaultMessageService messageService) {
         failHistory.forEach(scheduleRequest -> {
             Message message = createMessage(scheduleRequest.getUserPhoneNumber(), scheduleRequest.getBoardDate(), scheduleRequest.getBoardTime(), scheduleRequest.getTitle());
             SendMessageHistory sendHistory = sendMessageHistoryRepository.findById(scheduleRequest.getSendMessageHistoryId()).orElse(null);
@@ -97,7 +97,7 @@ public class ScheduledWriteService {
         });
     }
 
-    private void messagePendingSendList(List<BoardResult> pendingSendList, DefaultMessageService messageService) {
+    private void sendMessagePendingList(List<BoardResult> pendingSendList, DefaultMessageService messageService) {
         pendingSendList.forEach(boardResult -> {
             Message message = createMessage(boardResult.getPhoneNumber(), boardResult.getBoardDate(), boardResult.getBoardTime(), boardResult.getTitle());
 
