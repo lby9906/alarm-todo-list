@@ -1,4 +1,4 @@
-package com.spring.alarm_todo_list.application.board.dto;
+package com.spring.alarm_todo_list.application.board.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;
