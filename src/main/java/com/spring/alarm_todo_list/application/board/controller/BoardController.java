@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -25,7 +26,7 @@ public class BoardController {
     }
 
     @GetMapping("/{accountId}")
-    public BoardResponse findAll(@PathVariable Long accountId) {
-        return boardReadService.findAll(accountId);
+    public BoardResponse findAll(@PathVariable Long accountId, @RequestParam(required = false) LocalDate boardDate) {
+        return boardReadService.findAll(accountId, boardDate);
     }
 }

@@ -18,6 +18,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.tuple;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -50,7 +51,7 @@ class BoardReadServiceTest {
 
     @Test
     @Transactional
-    @DisplayName("회원id가 등록한 todolist를 현재 날짜에 맞게 전체 조회한다.")
+    @DisplayName("회원id가 등록한 todolist를 선택 날짜에 맞게 전체 조회한다.")
     public void findAll() {
         //given
         Account savedAccount = createAccount();
@@ -71,23 +72,23 @@ class BoardReadServiceTest {
                 savedAccount);
 
         //when
-        boardReadService.findAll(savedAccount.getId());
+        boardReadService.findAll(savedAccount.getId(), LocalDate.of(2025, 03, 11));
 
         //then
-        List<Board> findAllBoard = boardRepository.findAllBoardAndAccountId(savedAccount.getId(), LocalDate.now());
+        List<Board> findAllBoard = boardRepository.findAllBoardAndAccountId(savedAccount.getId(), LocalDate.of(2025, 3, 11));
 
         assertThat(findAllBoard).hasSize(2);
 
-        assertThat(findAllBoard.get(0).getTitle()).isEqualTo("test제목");
-        assertThat(findAllBoard.get(0).getContent()).isEqualTo("test내용");
-        assertThat(findAllBoard.get(0).getBoardDate()).isEqualTo(LocalDate.of(2025,03,11));
-        assertThat(findAllBoard.get(0).getBoardTime()).isEqualTo(LocalTime.of(23,11));
-        assertThat(findAllBoard.get(0).getBoardType()).isEqualTo(BoardType.TODO);
+        assertThat(findAllBoard).extracting(
+                        "title", "content", "boardDate", "boardTime", "boardType")
+                .contains(tuple("test제목", "test내용",
+                                LocalDate.of(2025,03,11),
+                                LocalTime.of(23,11),
+                                BoardType.TODO),
 
-        assertThat(findAllBoard.get(1).getTitle()).isEqualTo("test제목!!");
-        assertThat(findAllBoard.get(1).getContent()).isEqualTo("test내용!!");
-        assertThat(findAllBoard.get(1).getBoardDate()).isEqualTo(LocalDate.of(2025,03,11));
-        assertThat(findAllBoard.get(1).getBoardTime()).isEqualTo(LocalTime.of(20,00));
-        assertThat(findAllBoard.get(1).getBoardType()).isEqualTo(BoardType.TODO);
+                        tuple("test제목!!", "test내용!!",
+                                LocalDate.of(2025,03,11),
+                                LocalTime.of(20,00),
+                                BoardType.TODO));
     }
 }

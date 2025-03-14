@@ -1,5 +1,6 @@
 package com.spring.alarm_todo_list.application.board.dto;
 
+import com.spring.alarm_todo_list.application.board.dto.request.BoardRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;

@@ -1,19 +1,20 @@
-package com.spring.alarm_todo_list.config;
+package com.spring.alarm_todo_list;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.annotation.PostConstruct;
 import jakarta.persistence.EntityManager;
-import lombok.RequiredArgsConstructor;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@RequiredArgsConstructor
 public class QuerydslConfig {
 
-    private final EntityManager entityManager;
+    @PersistenceContext
+    private EntityManager em;
 
     @Bean
-    public JPAQueryFactory jpaQueryFactory() {
-        return new JPAQueryFactory(entityManager);
+    JPAQueryFactory jpaQueryFactory() {
+        return new JPAQueryFactory(em);
     }
 }

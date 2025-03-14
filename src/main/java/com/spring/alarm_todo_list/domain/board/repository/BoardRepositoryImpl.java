@@ -2,9 +2,11 @@ package com.spring.alarm_todo_list.domain.board.repository;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.spring.alarm_todo_list.QuerydslConfig;
 import com.spring.alarm_todo_list.domain.board.entity.Board;
 import com.spring.alarm_todo_list.domain.board.entity.QBoard;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -15,22 +17,23 @@ import static com.spring.alarm_todo_list.domain.account.entity.QAccount.account;
 
 @Repository
 @RequiredArgsConstructor
+@Import({QuerydslConfig.class})
 public class BoardRepositoryImpl implements BoardTodoRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<Board> findAllBoardAndAccountId(Long accountId, LocalDate localDate) {
+    public List<Board> findAllBoardAndAccountId(Long accountId, LocalDate boardDate) {
         return jpaQueryFactory
                 .select(board)
                 .from(board)
                 .innerJoin(board.account, account)
-                .where(eqNotNullDate(localDate), eqAccountId(accountId))
+                .where(eqNotNullDate(boardDate), eqAccountId(accountId))
                 .fetch();
     }
 
-    private BooleanExpression eqNotNullDate(LocalDate localDate){
-        return localDate != null ? board.boardDate.eq(localDate) : null;
+    private BooleanExpression eqNotNullDate(LocalDate boardDate){
+        return boardDate != null ? board.boardDate.eq(boardDate) : null;
     }
 
     private BooleanExpression eqAccountId(Long accountId){

@@ -25,9 +25,14 @@ public class BoardReadService {
     private final AccountRepository accountRepository;
     private final BoardRepository boardRepository;
 
-    public BoardResponse findAll(Long accountId) {
+    public BoardResponse findAll(Long accountId, LocalDate boardDate) {
+
+        if (boardDate == null) {
+            boardDate = LocalDate.now();
+        }
+
         Account account = accountRepository.findById(accountId).orElseThrow(() -> new AlarmTodoListException(ErrorCode.NOT_FOUND_ACCOUNT));
-        List<Board> boardList = boardRepository.findAllBoardAndAccountId(account.getId(), LocalDate.now());
+        List<Board> boardList = boardRepository.findAllBoardAndAccountId(account.getId(), boardDate);
 
         List<BoardListResponse> boardListResponses = boardList.stream()
                 .map(boardListResponse -> new BoardListResponse(boardListResponse.getId(),
