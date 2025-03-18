@@ -1,10 +1,6 @@
 package com.spring.alarm_todo_list.application.board.dto.response;
 
 import com.spring.alarm_todo_list.domain.board.enums.BoardType;
-import jakarta.validation.Validation;
-import jakarta.validation.Validator;
-import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +18,7 @@ class BoardResponseTest {
     @Test
     @Transactional
     @DisplayName("response의 닉네임과 bordList가 올바르게 반환된다.")
-    public void validateBoardResponse() {
+    public void successBoardResponse() {
         //given
         String nickName = "test";
         String title = "test제목";
@@ -39,7 +35,7 @@ class BoardResponseTest {
         BoardResponse boardResponse = new BoardResponse(nickName, boardList);
 
         //then
-        assertThat(boardResponse.getNickName()).isEqualTo("test");
+        assertThat(boardResponse.getNickName()).isEqualTo(nickName);
         assertThat(boardResponse.getBoardListResponseList()).hasSize(1);
 
         assertThat(boardList).extracting(

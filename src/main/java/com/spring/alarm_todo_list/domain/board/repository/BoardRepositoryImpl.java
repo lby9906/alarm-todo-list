@@ -2,11 +2,8 @@ package com.spring.alarm_todo_list.domain.board.repository;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.spring.alarm_todo_list.QuerydslConfig;
 import com.spring.alarm_todo_list.domain.board.entity.Board;
-import com.spring.alarm_todo_list.domain.board.entity.QBoard;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -17,8 +14,7 @@ import static com.spring.alarm_todo_list.domain.account.entity.QAccount.account;
 
 @Repository
 @RequiredArgsConstructor
-@Import({QuerydslConfig.class})
-public class BoardRepositoryImpl implements BoardTodoRepository {
+public class BoardRepositoryImpl implements BoardTodoQueryDslRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 

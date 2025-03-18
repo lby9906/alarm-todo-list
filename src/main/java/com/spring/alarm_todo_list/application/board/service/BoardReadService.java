@@ -35,9 +35,9 @@ public class BoardReadService {
         List<Board> boardList = boardRepository.findAllBoardAndAccountId(account.getId(), boardDate);
 
         List<BoardListResponse> boardListResponses = boardList.stream()
-                .map(boardListResponse -> new BoardListResponse(boardListResponse.getId(),
-                        boardListResponse.getTitle(), boardListResponse.getBoardDate(),
-                        boardListResponse.getBoardTime(), boardListResponse.getBoardType()))
+                .map(list -> new BoardListResponse(list.getId(),
+                        list.getTitle(), list.getBoardDate(),
+                        list.getBoardTime(), list.getBoardType()))
                 .collect(Collectors.toList());
 
         return new BoardResponse(account.getNickName(), boardListResponses);

@@ -5,6 +5,6 @@ import com.spring.alarm_todo_list.domain.board.entity.Board;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface BoardTodoRepository {
+public interface BoardTodoQueryDslRepository {
     List<Board> findAllBoardAndAccountId(Long accountId, LocalDate localDate);
 }
