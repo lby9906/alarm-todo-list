@@ -1,10 +1,13 @@
 package com.spring.alarm_todo_list.application.board.service;
 
+import com.spring.alarm_todo_list.AlarmTodoListApplication;
 import com.spring.alarm_todo_list.domain.account.entity.Account;
 import com.spring.alarm_todo_list.domain.account.repository.AccountRepository;
 import com.spring.alarm_todo_list.domain.board.entity.Board;
 import com.spring.alarm_todo_list.domain.board.enums.BoardType;
 import com.spring.alarm_todo_list.domain.board.repository.BoardRepository;
+import com.spring.alarm_todo_list.exception.AlarmTodoListException;
+import com.spring.alarm_todo_list.exception.ErrorCode;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -17,8 +20,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.tuple;
+import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -90,5 +92,29 @@ class BoardReadServiceTest {
                                 LocalDate.of(2025,03,11),
                                 LocalTime.of(20,00),
                                 BoardType.TODO));
+    }
+
+    @Test
+    @DisplayName("todolist 조회 시 회원이 존재하지 않을 경우 예외가 발생한다.")
+    public void occurAccountNullException() {
+        //given
+        Account savedAccount = createAccount();
+
+        createBoard(
+                "test제목",
+                "test내용",
+                LocalDate.of(2025, 03, 11),
+                LocalTime.of(23, 11),
+                BoardType.TODO,
+                savedAccount);
+
+        //when
+        AlarmTodoListException exception = assertThrows(AlarmTodoListException.class,
+                () -> boardReadService.findAll(-1L, LocalDate.of(2025,03,11)));
+
+        //then
+        assertThat(exception).isInstanceOf(AlarmTodoListException.class);
+        assertThat(exception.getErrorCode().getMessage()).isEqualTo("회원을 찾을 수 없습니다.");
+
     }
 }
