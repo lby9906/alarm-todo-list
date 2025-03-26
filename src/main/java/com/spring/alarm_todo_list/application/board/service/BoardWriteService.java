@@ -1,9 +1,9 @@
 package com.spring.alarm_todo_list.application.board.service;
 
-import com.spring.alarm_todo_list.application.board.dto.BoardRequest;
+import com.spring.alarm_todo_list.application.board.dto.request.BoardRequest;
 import com.spring.alarm_todo_list.domain.account.entity.Account;
 import com.spring.alarm_todo_list.domain.account.repository.AccountRepository;
-import com.spring.alarm_todo_list.domain.board.BoardRepository;
+import com.spring.alarm_todo_list.domain.board.repository.BoardRepository;
 import com.spring.alarm_todo_list.domain.board.entity.Board;
 import com.spring.alarm_todo_list.domain.board.enums.BoardType;
 import com.spring.alarm_todo_list.exception.AlarmTodoListException;

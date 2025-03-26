@@ -2,7 +2,7 @@ package com.spring.alarm_todo_list.application.schedule.service;
 
 import com.spring.alarm_todo_list.application.schedule.dto.request.BoardResult;
 import com.spring.alarm_todo_list.application.schedule.dto.request.ScheduleRequest;
-import com.spring.alarm_todo_list.domain.board.BoardRepository;
+import com.spring.alarm_todo_list.domain.board.repository.BoardRepository;
 import com.spring.alarm_todo_list.domain.board.entity.Board;
 import com.spring.alarm_todo_list.domain.sendMessageHistory.entity.SendMessageHistory;
 import com.spring.alarm_todo_list.domain.sendMessageHistory.enums.SendMessageHistoryType;
@@ -23,8 +23,6 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-
-import static kotlin.reflect.jvm.internal.impl.builtins.StandardNames.FqNames.list;
 
 @Service
 @RequiredArgsConstructor
