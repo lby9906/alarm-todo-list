@@ -1,12 +1,16 @@
 package com.spring.alarm_todo_list.domain.account.repository;
 
+import com.spring.alarm_todo_list.QuerydslConfig;
 import com.spring.alarm_todo_list.domain.account.entity.Account;
+import com.spring.alarm_todo_list.domain.account.enums.LoginType;
+import com.spring.alarm_todo_list.domain.account.enums.Role;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 
 import java.util.Optional;
 
@@ -15,6 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Import({QuerydslConfig.class})
 class AccountRepositoryTest {
 
     @Autowired
@@ -35,7 +40,7 @@ class AccountRepositoryTest {
         String phoneNumber = "010-1111-2222";
         String password = "0000";
 
-        Account account = new Account(email, nickName, phoneNumber, password);
+        Account account = new Account(email, nickName, phoneNumber, password, LoginType.BASIC, Role.USER);
 
         //when
         accountRepository.save(account);

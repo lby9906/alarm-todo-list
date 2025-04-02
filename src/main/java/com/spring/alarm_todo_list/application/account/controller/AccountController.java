@@ -1,6 +1,7 @@
 package com.spring.alarm_todo_list.application.account.controller;
 
 import com.spring.alarm_todo_list.application.account.dto.request.AccountRequest;
+import com.spring.alarm_todo_list.application.account.dto.response.AccountResponse;
 import com.spring.alarm_todo_list.application.account.service.AccountWriteService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -17,7 +18,7 @@ public class AccountController {
     private final AccountWriteService accountWriteService;
 
     @PostMapping
-    public String join(@RequestBody @Valid AccountRequest accountRequest) {
+    public AccountResponse join(@RequestBody @Valid AccountRequest accountRequest) {
         return accountWriteService.join(accountRequest);
     }
 }
