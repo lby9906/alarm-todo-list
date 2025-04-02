@@ -1,5 +1,7 @@
 package com.spring.alarm_todo_list.domain.account.entity;
 
+import com.spring.alarm_todo_list.domain.account.enums.LoginType;
+import com.spring.alarm_todo_list.domain.account.enums.Role;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -14,9 +16,11 @@ class AccountTest {
         String nickname = "nickname";
         String phoneNumber = "010-1234-1234";
         String password = "test";
+        LoginType loginType = LoginType.BASIC;
+        Role role = Role.USER;
 
         //when
-        Account createAccount = Account.of(email, nickname, phoneNumber, password);
+        Account createAccount = Account.of(email, nickname, phoneNumber, password, loginType, role);
 
         //then
         assertThat(createAccount.getEmail()).isEqualTo(email);

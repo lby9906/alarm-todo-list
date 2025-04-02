@@ -2,6 +2,8 @@ package com.spring.alarm_todo_list.application.board.service;
 
 import com.spring.alarm_todo_list.application.board.dto.request.BoardRequest;
 import com.spring.alarm_todo_list.domain.account.entity.Account;
+import com.spring.alarm_todo_list.domain.account.enums.LoginType;
+import com.spring.alarm_todo_list.domain.account.enums.Role;
 import com.spring.alarm_todo_list.domain.account.repository.AccountRepository;
 import com.spring.alarm_todo_list.domain.board.repository.BoardRepository;
 import com.spring.alarm_todo_list.domain.board.entity.Board;
@@ -10,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,7 +41,7 @@ class BoardWriteServiceTest {
     }
 
     private Account createAccount() {
-        Account account = Account.of("test@test.com", "test", "010-1234-1234", "0000");
+        Account account = Account.of("test@test.com", "test", "010-1234-1234", "0000", LoginType.BASIC, Role.USER);
         return accountRepository.save(account);
     }
 

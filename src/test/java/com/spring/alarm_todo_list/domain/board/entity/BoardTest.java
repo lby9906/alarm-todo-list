@@ -1,6 +1,8 @@
 package com.spring.alarm_todo_list.domain.board.entity;
 
 import com.spring.alarm_todo_list.domain.account.entity.Account;
+import com.spring.alarm_todo_list.domain.account.enums.LoginType;
+import com.spring.alarm_todo_list.domain.account.enums.Role;
 import com.spring.alarm_todo_list.domain.account.repository.AccountRepository;
 import com.spring.alarm_todo_list.domain.board.enums.BoardType;
 import org.junit.jupiter.api.DisplayName;
@@ -18,7 +20,7 @@ class BoardTest {
     @DisplayName("제목,내용,날짜,시간을 입력하여 일정을 생성한다.")
     public void createTodo() {
         //given
-        Account account = Account.of("test@test.com", "test", "010-1234-1234", "0000");
+        Account account = Account.of("test@test.com", "test", "010-1234-1234", "0000", LoginType.BASIC, Role.USER);
 
         String title = "00공부";
         String content = "1-2범위 공부하기";

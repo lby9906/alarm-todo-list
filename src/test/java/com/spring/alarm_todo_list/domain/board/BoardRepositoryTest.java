@@ -1,6 +1,9 @@
 package com.spring.alarm_todo_list.domain.board;
 
+import com.spring.alarm_todo_list.QuerydslConfig;
 import com.spring.alarm_todo_list.domain.account.entity.Account;
+import com.spring.alarm_todo_list.domain.account.enums.LoginType;
+import com.spring.alarm_todo_list.domain.account.enums.Role;
 import com.spring.alarm_todo_list.domain.board.entity.Board;
 import com.spring.alarm_todo_list.domain.board.enums.BoardType;
 import com.spring.alarm_todo_list.domain.board.repository.BoardRepository;
@@ -10,6 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -20,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Import({QuerydslConfig.class})
 class BoardRepositoryTest {
 
     @Autowired
@@ -34,7 +39,7 @@ class BoardRepositoryTest {
     @DisplayName("일정을 정상적으로 저장한다.")
     public void saveTodoSuccess() {
         //given
-        Account account = Account.of("test@test.com", "test", "010-1234-1234", "0000");
+        Account account = Account.of("test@test.com", "test", "010-1234-1234", "0000", LoginType.BASIC, Role.USER);
 
         String title = "00공부";
         String content = "1-2범위 공부하기";
