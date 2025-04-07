@@ -1,5 +1,6 @@
 package com.spring.alarm_todo_list.application.login.dto;
 
+import com.spring.alarm_todo_list.domain.account.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class AccountDetails implements UserDetails {
 
     private Long id;
     private String email;
-    private String role;
+    private Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

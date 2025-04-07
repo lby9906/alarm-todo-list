@@ -17,10 +17,8 @@ import org.springframework.context.annotation.Import;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
@@ -39,7 +37,7 @@ class BoardRepositoryTest {
     @DisplayName("일정을 정상적으로 저장한다.")
     public void saveTodoSuccess() {
         //given
-        Account account = Account.of("test@test.com", "test", "010-1234-1234", "0000", LoginType.BASIC, Role.USER);
+        Account account = Account.of("test@test.com", "test", "010-1234-1234", "0000", LoginType.BASIC, Role.ROLE_USER);
 
         String title = "00공부";
         String content = "1-2범위 공부하기";

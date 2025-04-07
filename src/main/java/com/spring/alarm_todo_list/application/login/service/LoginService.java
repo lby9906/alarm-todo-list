@@ -3,6 +3,7 @@ package com.spring.alarm_todo_list.application.login.service;
 import com.spring.alarm_todo_list.application.jwt.JwtTokenProvider;
 import com.spring.alarm_todo_list.application.login.dto.AccountLoginRequestDto;
 import com.spring.alarm_todo_list.application.login.dto.AccountLoginResponseDto;
+import com.spring.alarm_todo_list.application.login.dto.JwtToken;
 import com.spring.alarm_todo_list.domain.account.entity.Account;
 import com.spring.alarm_todo_list.domain.account.repository.AccountRepository;
 import com.spring.alarm_todo_list.exception.AlarmTodoListException;
@@ -26,8 +27,10 @@ public class LoginService {
                 .orElseThrow(() -> new AlarmTodoListException(ErrorCode.NOT_FOUND_ACCOUNT));
 
         if (!passwordEncoder.matches(requestDto.getPassword(), account.getPassword()))
-            throw new AlarmTodoListException(ErrorCode.NOT_MATCH_PASSWORD);
+            throw new AlarmTodoListException(ErrorCode.NOT_MATCH_EMAIL_PASSWORD);
 
-        return new AccountLoginResponseDto(account.getId(), account.getNickName(), jwtTokenProvider.createToken(requestDto.getEmail()));
+        JwtToken jwtToken = jwtTokenProvider.createToken(account.getEmail());
+
+        return new AccountLoginResponseDto(account.getId(), account.getNickName(), jwtToken.getToken(), jwtToken.getExpiresAt());
     }
 }

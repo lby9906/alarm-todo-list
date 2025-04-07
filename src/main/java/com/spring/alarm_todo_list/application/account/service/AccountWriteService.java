@@ -2,7 +2,6 @@ package com.spring.alarm_todo_list.application.account.service;
 
 import com.spring.alarm_todo_list.application.account.dto.request.AccountRequest;
 import com.spring.alarm_todo_list.application.account.dto.response.AccountResponse;
-import com.spring.alarm_todo_list.application.jwt.JwtTokenProvider;
 import com.spring.alarm_todo_list.domain.account.entity.Account;
 import com.spring.alarm_todo_list.domain.account.enums.LoginType;
 import com.spring.alarm_todo_list.domain.account.enums.Role;
@@ -33,7 +32,7 @@ public class AccountWriteService {
         }
 
         Account account = Account.of(accountRequest.getEmail(), accountRequest.getNickName(), accountRequest.getPhoneNumber(),
-                passwordEncoder.encode(accountRequest.getPassword()), LoginType.BASIC, Role.USER);
+                passwordEncoder.encode(accountRequest.getPassword()), LoginType.BASIC, Role.ROLE_USER);
         accountRepository.save(account);
 
         return new AccountResponse(account.getId(), account.getEmail(), account.getNickName());

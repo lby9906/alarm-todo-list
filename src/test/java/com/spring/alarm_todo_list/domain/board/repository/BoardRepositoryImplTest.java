@@ -41,7 +41,7 @@ class BoardRepositoryImplTest {
     @DisplayName("회원 id에 맞는 Todolist를 정상적으로 조회한다.")
     public void findTodoSuccess() {
         //given
-        Account account = Account.of("test@test.com", "test", "010-1234-1234", "0000", LoginType.BASIC, Role.USER);
+        Account account = Account.of("test@test.com", "test", "010-1234-1234", "0000", LoginType.BASIC, Role.ROLE_USER);
         Board board1 = Board.of(
                 "test제목",
                 "test내용",
@@ -83,7 +83,7 @@ class BoardRepositoryImplTest {
     @DisplayName("오늘 날짜로 된 Todolist가 없는 경우 빈 리스트를 반환한다.")
     public void giveTodolistIsEmpty() {
         //given
-        Account account = Account.of("test@test.com", "test", "010-1234-1234", "0000", LoginType.BASIC, Role.USER);
+        Account account = Account.of("test@test.com", "test", "010-1234-1234", "0000", LoginType.BASIC, Role.ROLE_USER);
         Board board1 = Board.of(
                 "test제목",
                 "test내용",

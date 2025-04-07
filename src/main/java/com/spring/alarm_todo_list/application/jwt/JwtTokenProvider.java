@@ -1,5 +1,6 @@
 package com.spring.alarm_todo_list.application.jwt;
 
+import com.spring.alarm_todo_list.application.login.dto.JwtToken;
 import com.spring.alarm_todo_list.application.login.service.AccountDetailService;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
@@ -16,7 +17,11 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.security.Key;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
+
+import static io.jsonwebtoken.Jwts.builder;
 
 @Component
 @RequiredArgsConstructor
@@ -26,7 +31,7 @@ public class JwtTokenProvider {
     private String secretKey;
 
     private Key key;
-    private final long tokenValidTime = 1000L * 60 * 30;
+    private final long TOKEN_VALID_TIME = 1000L * 60 * 30;
 
     private final AccountDetailService accountDetailService;
 
@@ -36,16 +41,23 @@ public class JwtTokenProvider {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String createToken(String email) {
+    public JwtToken createToken(String email) {
         Claims claims = Jwts.claims().setSubject(email);
         Date now = new Date();
+        Date expiry = new Date(now.getTime() + TOKEN_VALID_TIME);
 
-        return Jwts.builder()
+        String token =  Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + tokenValidTime))
+                .setExpiration(expiry)
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
+
+        LocalDateTime expireAt = expiry.toInstant()
+                .atZone(ZoneId.of("Asia/Seoul"))
+                .toLocalDateTime();
+
+        return new JwtToken(token, expireAt);
     }
 
     public Authentication getAuthentication(String token) {

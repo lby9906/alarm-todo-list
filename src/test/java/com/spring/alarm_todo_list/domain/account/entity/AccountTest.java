@@ -17,7 +17,7 @@ class AccountTest {
         String phoneNumber = "010-1234-1234";
         String password = "test";
         LoginType loginType = LoginType.BASIC;
-        Role role = Role.USER;
+        Role role = Role.ROLE_USER;
 
         //when
         Account createAccount = Account.of(email, nickname, phoneNumber, password, loginType, role);

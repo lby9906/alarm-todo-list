@@ -40,7 +40,7 @@ class AccountRepositoryTest {
         String phoneNumber = "010-1111-2222";
         String password = "0000";
 
-        Account account = new Account(email, nickName, phoneNumber, password, LoginType.BASIC, Role.USER);
+        Account account = new Account(email, nickName, phoneNumber, password, LoginType.BASIC, Role.ROLE_USER);
 
         //when
         accountRepository.save(account);

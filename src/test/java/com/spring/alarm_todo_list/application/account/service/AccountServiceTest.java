@@ -65,7 +65,7 @@ class AccountServiceTest {
         String phoneNumber = "010-1111-2222";
         String password = "0000";
         LoginType loginType = LoginType.BASIC;
-        Role role = Role.USER;
+        Role role = Role.ROLE_USER;
 
         accountRepository.save(Account.of(email, nickName, phoneNumber, password, loginType, role));
         AccountRequest request = new AccountRequest(email, nickName, phoneNumber, password);
