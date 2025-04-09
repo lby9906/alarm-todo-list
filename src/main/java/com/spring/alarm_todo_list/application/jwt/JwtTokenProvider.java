@@ -21,8 +21,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
-import static io.jsonwebtoken.Jwts.builder;
-
 @Component
 @RequiredArgsConstructor
 public class JwtTokenProvider {
@@ -41,12 +39,12 @@ public class JwtTokenProvider {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public JwtToken createToken(String email) {
+    public JwtToken createAccessToken(String email) {
         Claims claims = Jwts.claims().setSubject(email);
         Date now = new Date();
         Date expiry = new Date(now.getTime() + TOKEN_VALID_TIME);
 
-        String token =  Jwts.builder()
+        String token = Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(expiry)

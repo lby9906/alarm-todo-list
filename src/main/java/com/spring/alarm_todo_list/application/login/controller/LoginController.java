@@ -15,21 +15,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RestControllerAdvice
 @RequiredArgsConstructor
 public class LoginController {
 
     private final LoginService loginService;
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> validation(MethodArgumentNotValidException e) {
-        Map<String, String> error = new HashMap<>();
-        e.getAllErrors().forEach(
-                c -> error.put(((FieldError) c).getField(), c.getDefaultMessage())
-        );
-        return ResponseEntity.badRequest().body(error);
-    }
-
 
     @PostMapping("/login")
     public AccountLoginResponseDto login(@Valid @RequestBody AccountLoginRequestDto requestDto) {

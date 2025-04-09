@@ -29,7 +29,7 @@ public class LoginService {
         if (!passwordEncoder.matches(requestDto.getPassword(), account.getPassword()))
             throw new AlarmTodoListException(ErrorCode.NOT_MATCH_EMAIL_PASSWORD);
 
-        JwtToken jwtToken = jwtTokenProvider.createToken(account.getEmail());
+        JwtToken jwtToken = jwtTokenProvider.createAccessToken(account.getEmail());
 
         return new AccountLoginResponseDto(account.getId(), account.getNickName(), jwtToken.getToken(), jwtToken.getExpiresAt());
     }

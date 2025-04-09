@@ -23,7 +23,7 @@ class JwtTokenProviderTest {
         String email = "test@test.com";
 
         //when
-        JwtToken token = jwtTokenProvider.createToken(email);
+        JwtToken token = jwtTokenProvider.createAccessToken(email);
 
         //then
         assertThat(token).isNotNull();
