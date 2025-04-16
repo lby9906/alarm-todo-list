@@ -25,7 +25,7 @@
 
 
 ## 🛠️ 주요 기능
-```bash
+
 - 사용자
     - 회원 가입: 사용자 계정 등록
     - 로그인: JWT를 이용한 로그인
@@ -37,7 +37,6 @@
     - Todo 삭제: 일정 삭제
     - Todo 조회: 특정 날짜로 상세 조회 / 일정 전체 조회
     - Todo 상태 변경: 기본값 TODO <-> DONE 상태 변경
-```
 
 ## 🗒️ API 명세서
 > https://documenter.getpostman.com/view/25131614/2sB2cbaJe9
