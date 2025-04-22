@@ -25,7 +25,7 @@ public class LoginController {
         AccountLoginResponseDto login = loginService.login(requestDto);
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Authorization","Bearer " + login.getToken());
+        httpHeaders.add("Authorization", String.format("Bearer %s", login.getToken()));
 
         return login;
     }
