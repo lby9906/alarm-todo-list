@@ -14,6 +14,8 @@ import java.util.Map;
 @Builder
 public class GlobalExceptionHandler {
 
+    private final ErrorHandler errorHandler;
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> validation(MethodArgumentNotValidException e) {
         Map<String, String> error = new HashMap<>();
@@ -26,18 +28,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AlarmTodoListException.class)
     public ResponseEntity<Object> handlerAlarmTodoListException(AlarmTodoListException e) {
         ErrorCode errorCode = e.getErrorCode();
-        return handleExceptionInternal(errorCode);
-    }
-
-    private ResponseEntity<Object> handleExceptionInternal(ErrorCode errorCode) {
-        return ResponseEntity.status(errorCode.getHttpStatus())
-                .body(makeErrorResponse(errorCode));
-    }
-
-    private ErrorResponse makeErrorResponse(ErrorCode errorCode) {
-        return ErrorResponse.builder()
-                .code(errorCode.name())
-                .message(errorCode.getMessage())
-                .build();
+        return errorHandler.handleExceptionInternal(errorCode);
     }
 }

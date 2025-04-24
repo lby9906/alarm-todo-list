@@ -1,13 +1,12 @@
 package com.spring.alarm_todo_list.application.login.service;
 
-import com.spring.alarm_todo_list.application.jwt.JwtTokenProvider;
 import com.spring.alarm_todo_list.application.login.dto.AccountLoginRequestDto;
 import com.spring.alarm_todo_list.application.login.dto.AccountLoginResponseDto;
 import com.spring.alarm_todo_list.domain.account.entity.Account;
 import com.spring.alarm_todo_list.domain.account.enums.LoginType;
 import com.spring.alarm_todo_list.domain.account.enums.Role;
 import com.spring.alarm_todo_list.domain.account.repository.AccountRepository;
-import org.assertj.core.api.Assertions;
+import com.spring.alarm_todo_list.exception.AlarmTodoListException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -66,5 +65,24 @@ class LoginServiceTest {
         assertNotNull(responseDto.getToken());
         assertNotNull(responseDto.getExpiresAt());
         assertThat(responseDto.getExpiresAt()).isAfter(LocalDateTime.now());
+    }
+
+    @Test
+    @DisplayName("존재하는 회원이 로그인 시 이메일 또는 비밀번호가 일치하지 않으면 예외가 발생한다.")
+    public void notMatchEmailPasswordException() {
+        String password = "0000";
+
+        //given
+        Account savedAccount = createAccount(password);
+
+        AccountLoginRequestDto requestDto = new AccountLoginRequestDto(savedAccount.getEmail(), "1111");
+
+        //when
+        AlarmTodoListException exception = assertThrows(AlarmTodoListException.class,
+                () -> loginService.login(requestDto));
+
+        //then
+        assertThat(exception).isInstanceOf(AlarmTodoListException.class);
+        assertThat(exception.getErrorCode().getMessage()).isEqualTo("이메일 또는 비밀번호가 일치하지 않습니다.");
     }
 }
