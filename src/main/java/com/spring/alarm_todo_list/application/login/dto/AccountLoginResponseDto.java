@@ -12,6 +12,8 @@ import java.time.LocalDateTime;
 public class AccountLoginResponseDto {
     private Long id;
     private String nickName;
-    private String token;
-    private LocalDateTime expiresAt;
+    private String accessToken;
+    private LocalDateTime accessExpiresAt;
+    private String refreshToken;
+    private LocalDateTime refreshExpiresAt;
 }

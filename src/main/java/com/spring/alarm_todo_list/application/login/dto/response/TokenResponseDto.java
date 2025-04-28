@@ -1,12 +1,14 @@
-package com.spring.alarm_todo_list.application.login.dto;
+package com.spring.alarm_todo_list.application.login.dto.response;
 
-import lombok.Builder;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
 import java.time.LocalDateTime;
 
 @Getter
-@Builder
-public class JwtToken {
+@RequiredArgsConstructor
+public class TokenResponseDto {
+
     private final String accessToken;
     private final LocalDateTime accessExpiresAt;
     private final String refreshToken;

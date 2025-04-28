@@ -27,6 +27,6 @@ class JwtTokenProviderTest {
 
         //then
         assertThat(token).isNotNull();
-        assertThat(token.getToken()).isNotBlank();
+        assertThat(token.getAccessToken()).isNotBlank();
     }
 }

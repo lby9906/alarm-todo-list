@@ -1,6 +1,6 @@
 package com.spring.alarm_todo_list.application.login.service;
 
-import com.spring.alarm_todo_list.application.login.dto.AccountLoginRequestDto;
+import com.spring.alarm_todo_list.application.login.dto.request.AccountLoginRequestDto;
 import com.spring.alarm_todo_list.application.login.dto.AccountLoginResponseDto;
 import com.spring.alarm_todo_list.domain.account.entity.Account;
 import com.spring.alarm_todo_list.domain.account.enums.LoginType;
@@ -62,9 +62,12 @@ class LoginServiceTest {
         assertThat(account.getId()).isEqualTo(savedAccount.getId());
         assertThat(account.getNickName()).isEqualTo(savedAccount.getNickName());
 
-        assertNotNull(responseDto.getToken());
-        assertNotNull(responseDto.getExpiresAt());
-        assertThat(responseDto.getExpiresAt()).isAfter(LocalDateTime.now());
+        assertNotNull(responseDto.getAccessToken());
+        assertNotNull(responseDto.getAccessExpiresAt());
+        assertNotNull(responseDto.getRefreshToken());
+        assertNotNull(responseDto.getRefreshExpiresAt());
+        assertThat(responseDto.getAccessExpiresAt()).isAfter(LocalDateTime.now());
+        assertThat(responseDto.getRefreshExpiresAt()).isAfter(LocalDateTime.now());
     }
 
     @Test

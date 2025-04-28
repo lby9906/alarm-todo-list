@@ -1,8 +1,7 @@
-package com.spring.alarm_todo_list.application.login.dto;
+package com.spring.alarm_todo_list.application.login.dto.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

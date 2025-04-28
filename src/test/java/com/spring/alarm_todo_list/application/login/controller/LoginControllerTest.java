@@ -3,7 +3,7 @@ package com.spring.alarm_todo_list.application.login.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spring.alarm_todo_list.application.jwt.JwtTokenProvider;
-import com.spring.alarm_todo_list.application.login.dto.AccountLoginRequestDto;
+import com.spring.alarm_todo_list.application.login.dto.request.AccountLoginRequestDto;
 import com.spring.alarm_todo_list.application.login.dto.AccountLoginResponseDto;
 import com.spring.alarm_todo_list.application.login.service.LoginService;
 import com.spring.alarm_todo_list.config.JwtAccessDeniedHandler;
@@ -60,7 +60,8 @@ class LoginControllerTest {
     public void successLoginResponse() throws Exception {
         //given
         AccountLoginRequestDto requestDto = new AccountLoginRequestDto("test@test.com", "0000");
-        AccountLoginResponseDto responseDto = new AccountLoginResponseDto(1L, "test", "fake-jwt-token", LocalDateTime.now().plusHours(1));
+        AccountLoginResponseDto responseDto = new AccountLoginResponseDto(1L, "test", "fake-jwt-access-token",
+                LocalDateTime.now().plusHours(1), "fake-jwt-refresh-token", LocalDateTime.now().plusHours(1));
 
         given(loginService.login(any(AccountLoginRequestDto.class))).willReturn(responseDto);
 
@@ -71,8 +72,10 @@ class LoginControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1L))
                 .andExpect(jsonPath("$.nickName").value("test"))
-                .andExpect(jsonPath("$.token").value("fake-jwt-token"))
-                .andExpect(jsonPath("$.expiresAt").exists());
+                .andExpect(jsonPath("$.accessToken").value("fake-jwt-access-token"))
+                .andExpect(jsonPath("$.accessExpiresAt").exists())
+                .andExpect(jsonPath("$.refreshToken").value("fake-jwt-refresh-token"))
+                .andExpect(jsonPath("$.refreshExpiresAt").exists());
 
     }
 

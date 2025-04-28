@@ -31,6 +31,8 @@ public class JwtTokenProvider {
     private Key key;
     private final long TOKEN_VALID_TIME = 1000L * 60 * 30;
 
+    private final long REFRESH_TOKEN_VALID_TIME = 1000L * 60 * 60 * 24 * 7;
+
     private final AccountDetailService accountDetailService;
 
     @PostConstruct
@@ -55,7 +57,44 @@ public class JwtTokenProvider {
                 .atZone(ZoneId.of("Asia/Seoul"))
                 .toLocalDateTime();
 
-        return new JwtToken(token, expireAt);
+        return JwtToken.builder()
+                .accessToken(token)
+                .accessExpiresAt(expireAt)
+                .build();
+    }
+
+    public JwtToken createRefreshToken(String email) {
+        Date now = new Date();
+        Date expiry = new Date(now.getTime() + REFRESH_TOKEN_VALID_TIME);
+
+        String refresh = Jwts.builder()
+                .setSubject(email)
+                .setIssuedAt(now)
+                .setExpiration(expiry)
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
+
+        LocalDateTime expireAt = expiry.toInstant()
+                .atZone(ZoneId.of("Asia/Seoul"))
+                .toLocalDateTime();
+
+        return JwtToken.builder()
+                .refreshToken(refresh)
+                .refreshExpiresAt(expireAt)
+                .build();
+    }
+
+
+    public JwtToken createAllToken(String email) {
+        JwtToken accessToken = createAccessToken(email);
+        JwtToken refreshToken = createRefreshToken(email);
+
+        return JwtToken.builder()
+                .accessToken(accessToken.getAccessToken())
+                .accessExpiresAt(accessToken.getAccessExpiresAt())
+                .refreshToken(refreshToken.getRefreshToken())
+                .refreshExpiresAt(refreshToken.getRefreshExpiresAt())
+                .build();
     }
 
     public Authentication getAuthentication(String token) {
