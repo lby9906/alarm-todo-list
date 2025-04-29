@@ -26,7 +26,7 @@ public class LoginController {
         return login;
     }
 
-    @PostMapping("/reIssue")
+    @PostMapping("/re-issue")
     public TokenResponseDto reIssue(@Valid @RequestBody TokenRequestDto requestDto) {
         return loginService.reIssue(requestDto);
     }

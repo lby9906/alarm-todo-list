@@ -17,31 +17,36 @@ import java.util.concurrent.TimeUnit;
 public class RefreshTokenRepositoryImpl implements RefreshTokenRepository {
     private final RedisTemplate redisTemplate;
 
+    private final long REFRESH_TOKEN_EXPIRE_SECONDS = 60 * 60 * 24;
+
     @Override
     public void save(RefreshToken refreshToken) {
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
 
-        if(!Objects.isNull(valueOperations.get(refreshToken.getEmail()))){
-            redisTemplate.delete(refreshToken.getEmail());
+        String key = String.valueOf(refreshToken.getAccountId());
+
+        if(!Objects.isNull(valueOperations.get(key))){
+            redisTemplate.delete(key);
         }
-        valueOperations.set(refreshToken.getEmail(), refreshToken.getRefreshToken());
-        redisTemplate.expire(refreshToken.getEmail(), 60 * 60 * 24, TimeUnit.SECONDS);
+
+        valueOperations.set(key, refreshToken.getRefreshToken());
+        redisTemplate.expire(key, REFRESH_TOKEN_EXPIRE_SECONDS, TimeUnit.SECONDS);
     }
 
     @Override
-    public Optional<RefreshToken> findByEmail(String email) {
+    public Optional<RefreshToken> findByAccountId(Long id) {
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
-        String refreshToken = valueOperations.get(email);
+        String refreshToken = valueOperations.get(id);
 
         if (refreshToken == null) {
             return Optional.empty();
         } else {
-            return Optional.of(new RefreshToken(email, refreshToken));
+            return Optional.of(new RefreshToken(id, refreshToken));
         }
     }
 
     @Override
-    public void delete(String email) {
-        redisTemplate.delete(email);
+    public void delete(Long id) {
+        redisTemplate.delete(id);
     }
 }

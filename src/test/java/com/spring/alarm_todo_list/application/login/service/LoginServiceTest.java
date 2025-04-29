@@ -44,7 +44,6 @@ class LoginServiceTest {
     }
 
     @Test
-    @Transactional
     @DisplayName("존재하는 회원이 로그인 성공 시 토큰 및 사용자 정보가 반환된다.")
     void successLogin() {
         String password = "0000";

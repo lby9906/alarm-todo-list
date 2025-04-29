@@ -36,7 +36,7 @@ public class LoginService {
 
         JwtToken jwtToken = jwtTokenProvider.createAllToken(account.getEmail());
 
-        refreshTokenRepository.save(new RefreshToken(account.getEmail(), jwtToken.getRefreshToken()));
+        refreshTokenRepository.save(new RefreshToken(account.getId(), jwtToken.getRefreshToken()));
 
         return new AccountLoginResponseDto(account.getId(), account.getNickName(),
                 jwtToken.getAccessToken(), jwtToken.getAccessExpiresAt(),
@@ -49,15 +49,15 @@ public class LoginService {
 
         String email = jwtTokenProvider.getAccountEmail(requestDto.getRefreshToken());
 
-        RefreshToken findRefreshToken = refreshTokenRepository.findByEmail(email)
+        Account account = accountRepository.findByEmail(email)
+                .orElseThrow(() -> new AlarmTodoListException(ErrorCode.NOT_FOUND_ACCOUNT));
+
+        RefreshToken findRefreshToken = refreshTokenRepository.findByAccountId(account.getId())
                 .orElseThrow(() -> new AlarmTodoListException(ErrorCode.NOT_FOUND_LOGIN_ACCOUNT));
 
         if (!findRefreshToken.getRefreshToken().equals(requestDto.getRefreshToken())) {
             throw new AlarmTodoListException(ErrorCode.NOT_MATCH_REFRESH_TOKEN);
         }
-
-        Account account = accountRepository.findByEmail(email)
-                .orElseThrow(() -> new AlarmTodoListException(ErrorCode.NOT_FOUND_ACCOUNT));
 
         JwtToken newToken = jwtTokenProvider.createAllToken(email);
         findRefreshToken.updateRefreshToken(newToken.getRefreshToken());

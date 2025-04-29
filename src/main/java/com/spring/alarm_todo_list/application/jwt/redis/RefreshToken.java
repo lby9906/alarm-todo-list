@@ -14,7 +14,7 @@ import org.springframework.data.redis.core.RedisHash;
 @RedisHash(value = "refreshToken", timeToLive = 60 * 60 * 24)
 public class RefreshToken extends BaseEntity {
 
-    private String email;
+    private Long accountId;
     private String refreshToken;
 
     public void updateRefreshToken(String refreshToken) {

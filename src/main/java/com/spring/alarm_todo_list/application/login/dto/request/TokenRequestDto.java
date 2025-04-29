@@ -8,9 +8,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class TokenRequestDto {
 
-    @NotBlank(message="accessToken은 필수값입니다.")
-    private String accessToken;
-
     @NotBlank(message="refresh 필수값입니다.")
     private String refreshToken;
 }
