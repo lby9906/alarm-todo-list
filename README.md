@@ -22,7 +22,7 @@
 <img src="https://img.shields.io/badge/QueryDSL-0769AD?style=flat&logo=QueryDSL&logoColor=white"/>
 <img src="https://img.shields.io/badge/Junit5-25A162?style=flat&logo=junit5&logoColor=white"/>
 <img src="https://img.shields.io/badge/Docker Compose-2496ED?style=flat&logo=docker&logoColor=white"/>
-
+<img src="https://img.shields.io/badge/Redis-FF4438?style=flat&logo=Redis&logoColor=white"/>
 
 ## 🛠️ 주요 기능
 
