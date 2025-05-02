@@ -2,6 +2,8 @@ package com.spring.alarm_todo_list.application.account.service;
 
 import com.spring.alarm_todo_list.application.account.dto.request.AccountRequest;
 import com.spring.alarm_todo_list.domain.account.entity.Account;
+import com.spring.alarm_todo_list.domain.account.enums.LoginType;
+import com.spring.alarm_todo_list.domain.account.enums.Role;
 import com.spring.alarm_todo_list.domain.account.repository.AccountRepository;
 import com.spring.alarm_todo_list.exception.AlarmTodoListException;
 import com.spring.alarm_todo_list.exception.ErrorCode;
@@ -62,8 +64,10 @@ class AccountServiceTest {
         String nickName = "test";
         String phoneNumber = "010-1111-2222";
         String password = "0000";
+        LoginType loginType = LoginType.BASIC;
+        Role role = Role.ROLE_USER;
 
-        accountRepository.save(Account.of(email, nickName, phoneNumber, password));
+        accountRepository.save(Account.of(email, nickName, phoneNumber, password, loginType, role));
         AccountRequest request = new AccountRequest(email, nickName, phoneNumber, password);
 
         //when && then

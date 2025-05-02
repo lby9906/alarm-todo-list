@@ -1,14 +1,13 @@
 package com.spring.alarm_todo_list.application.board.service;
 
-import com.spring.alarm_todo_list.AlarmTodoListApplication;
 import com.spring.alarm_todo_list.domain.account.entity.Account;
+import com.spring.alarm_todo_list.domain.account.enums.LoginType;
+import com.spring.alarm_todo_list.domain.account.enums.Role;
 import com.spring.alarm_todo_list.domain.account.repository.AccountRepository;
 import com.spring.alarm_todo_list.domain.board.entity.Board;
 import com.spring.alarm_todo_list.domain.board.enums.BoardType;
 import com.spring.alarm_todo_list.domain.board.repository.BoardRepository;
 import com.spring.alarm_todo_list.exception.AlarmTodoListException;
-import com.spring.alarm_todo_list.exception.ErrorCode;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,7 +41,7 @@ class BoardReadServiceTest {
     }
 
     private Account createAccount() {
-        Account account = Account.of("test@test.com", "test", "010-1234-1234", "0000");
+        Account account = Account.of("test@test.com", "test", "010-1234-1234", "0000", LoginType.BASIC, Role.ROLE_USER);
         return accountRepository.save(account);
     }
 

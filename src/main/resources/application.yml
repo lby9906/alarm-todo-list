@@ -15,7 +15,17 @@ spring:
       hibernate:
         show_sql: true
 
+  jwt:
+    secretKey: ${JWT_SECRET_KEY}
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      connect-timeout: 6
+
 coolsms:
   apiKey: ${SMS_API_KEY}
   secretKey: ${SMS_SECRET_KEY}
   phoneNumber: ${FROM_PHONE_NUMBER}
+
