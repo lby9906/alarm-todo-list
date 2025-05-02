@@ -12,7 +12,7 @@
 
 ## ⚙️ TechStack
 <div align="left">
-<img src="https://img.shields.io/badge/Java-006272?style=flat&logo=&logoColor=white"/>
+<img src="https://img.shields.io/badge/Java-007396?style=flat&logo=OpenJDK&logoColor=white"/>
 <img src="https://img.shields.io/badge/Spring-6DB33F?style=flat&logo=Spring&logoColor=white"/>
 <img src="https://img.shields.io/badge/JPA-6DB33F?style=flat&logo=&logoColor=white"/> 
 <img src="https://img.shields.io/badge/SpringScheduler-6DB33F?style=flat&logo=springScheduler&logoColor=white"/> 
