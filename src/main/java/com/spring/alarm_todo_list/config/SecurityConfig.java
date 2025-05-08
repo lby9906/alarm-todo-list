@@ -36,7 +36,7 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorizeRequest ->
                         authorizeRequest
-                                .requestMatchers("/login", "/account", "/reIssue").permitAll()
+                                .requestMatchers("/login", "/account", "/re-issue").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .exceptionHandling((exceptionHandling) ->

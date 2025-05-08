@@ -36,7 +36,7 @@ public class RefreshTokenRepositoryImpl implements RefreshTokenRepository {
     @Override
     public Optional<RefreshToken> findByAccountId(Long id) {
         ValueOperations<String, String> valueOperations = redisTemplate.opsForValue();
-        String refreshToken = valueOperations.get(id);
+        String refreshToken = valueOperations.get(String.valueOf(id));
 
         if (refreshToken == null) {
             return Optional.empty();
