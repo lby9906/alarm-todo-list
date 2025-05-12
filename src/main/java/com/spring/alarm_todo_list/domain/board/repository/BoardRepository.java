@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface BoardRepository extends JpaRepository<Board, Long>, BoardTodoQueryDslRepository {
@@ -28,4 +29,6 @@ public interface BoardRepository extends JpaRepository<Board, Long>, BoardTodoQu
           AND :nowTime >= DATE_FORMAT(b.created_At, '%H-%i-%s')
     """, nativeQuery = true)
     List<BoardResult> findAllByCreatedAtEqualDateAndLessThanTime(@Param("nowDate")LocalDate nowDate, @Param("nowTime") LocalTime nowTime);
+
+    Optional<Board> findByIdAndAccountId(Long boardId, Long accountId);
 }

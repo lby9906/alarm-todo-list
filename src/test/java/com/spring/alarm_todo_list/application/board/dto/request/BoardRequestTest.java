@@ -1,4 +1,4 @@
-package com.spring.alarm_todo_list.application.board.dto;
+package com.spring.alarm_todo_list.application.board.dto.request;
 
 import com.spring.alarm_todo_list.application.board.dto.request.BoardRequest;
 import jakarta.validation.ConstraintViolation;
