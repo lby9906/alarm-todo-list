@@ -146,7 +146,7 @@ class BoardWriteServiceTest {
     }
 
     @Test
-    @DisplayName("존재하는 회원이 제목을 수정 시 정상적으로 수정된다.")
+    @DisplayName("존재하는 회원이 자신이 등록한 Todo 제목을 수정 시 정상적으로 수정된다.")
     @Transactional
     public void existAccountUpdateTodoTitle() {
         //given
@@ -168,7 +168,7 @@ class BoardWriteServiceTest {
     }
 
     @Test
-    @DisplayName("존재하는 회원이 내용을 수정 시 정상적으로 수정된다.")
+    @DisplayName("존재하는 회원이 자신이 등록한 Todo 내용을 수정 시 정상적으로 수정된다.")
     @Transactional
     public void existAccountUpdateTodoContent() {
         //given
@@ -190,7 +190,7 @@ class BoardWriteServiceTest {
     }
 
     @Test
-    @DisplayName("존재하는 회원이 날짜를 수정 시 정상적으로 수정된다.")
+    @DisplayName("존재하는 회원이 자신이 등록한 Todo 날짜를 수정 시 정상적으로 수정된다.")
     @Transactional
     public void existAccountUpdateTodoBoardDate() {
         //given
@@ -212,7 +212,7 @@ class BoardWriteServiceTest {
     }
 
     @Test
-    @DisplayName("존재하는 회원이 시간을 수정 시 정상적으로 수정된다.")
+    @DisplayName("존재하는 회원이 자신이 등록한 Todo 시간을 수정 시 정상적으로 수정된다.")
     @Transactional
     public void existAccountUpdateTodoBoardTime() {
         //given
