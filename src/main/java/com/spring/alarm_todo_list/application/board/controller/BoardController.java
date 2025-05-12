@@ -1,6 +1,7 @@
 package com.spring.alarm_todo_list.application.board.controller;
 
 import com.spring.alarm_todo_list.application.board.dto.request.BoardRequest;
+import com.spring.alarm_todo_list.application.board.dto.request.BoardUpdateRequest;
 import com.spring.alarm_todo_list.application.board.dto.response.BoardListResponse;
 import com.spring.alarm_todo_list.application.board.dto.response.BoardResponse;
 import com.spring.alarm_todo_list.application.board.service.BoardReadService;
@@ -28,5 +29,10 @@ public class BoardController {
     @GetMapping("/{accountId}")
     public BoardResponse findAll(@PathVariable Long accountId, @RequestParam(required = false) LocalDate boardDate) {
         return boardReadService.findAll(accountId, boardDate);
+    }
+
+    @PutMapping("/{accountId}/{boardId}")
+    public String update(@PathVariable Long accountId, @PathVariable Long boardId, @RequestBody @Valid BoardUpdateRequest boardUpdateRequest) {
+        return boardWriteService.update(accountId, boardId, boardUpdateRequest);
     }
 }

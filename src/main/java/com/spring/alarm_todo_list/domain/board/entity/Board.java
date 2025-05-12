@@ -37,4 +37,11 @@ public class Board extends BaseEntity {
     public static Board of(String title, String content, LocalDate boardDate, LocalTime boardTime, BoardType boardType, Account account){
         return new Board(title, content, boardDate, boardTime, boardType, account);
     }
+
+    public void update(String title, String content, LocalDate boardDate, LocalTime boardTime) {
+        this.title = title;
+        this.content = content;
+        this.boardDate = boardDate;
+        this.boardTime = boardTime;
+    }
 }
