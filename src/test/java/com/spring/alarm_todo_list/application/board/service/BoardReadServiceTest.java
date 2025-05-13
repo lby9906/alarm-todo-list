@@ -73,7 +73,7 @@ class BoardReadServiceTest {
                 savedAccount);
 
         //when
-        boardReadService.findAll(savedAccount.getId(), LocalDate.of(2025, 03, 11));
+        boardReadService.findAll(savedAccount, LocalDate.of(2025, 03, 11));
 
         //then
         List<Board> findAllBoard = boardRepository.findAllBoardAndAccountId(savedAccount.getId(), LocalDate.of(2025, 3, 11));
@@ -109,7 +109,7 @@ class BoardReadServiceTest {
 
         //when
         AlarmTodoListException exception = assertThrows(AlarmTodoListException.class,
-                () -> boardReadService.findAll(-1L, LocalDate.of(2025,03,11)));
+                () -> boardReadService.findAll(null, LocalDate.of(2025,03,11)));
 
         //then
         assertThat(exception).isInstanceOf(AlarmTodoListException.class);

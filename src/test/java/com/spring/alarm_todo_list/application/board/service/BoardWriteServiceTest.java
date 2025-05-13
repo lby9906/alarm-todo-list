@@ -67,7 +67,7 @@ class BoardWriteServiceTest {
         BoardRequest boardRequest = new BoardRequest(title, content, boardDate, boardTime);
 
         //when
-        boardWriteService.create(savedAccount.getId(), boardRequest);
+        boardWriteService.create(savedAccount, boardRequest);
 
 
         //then
@@ -94,7 +94,7 @@ class BoardWriteServiceTest {
 
         //when
         AlarmTodoListException exception = assertThrows(AlarmTodoListException.class,
-                () -> boardWriteService.create(-1L, boardRequest));
+                () -> boardWriteService.create(null, boardRequest));
 
         //then
         assertThat(exception).isInstanceOf(AlarmTodoListException.class);
@@ -113,7 +113,7 @@ class BoardWriteServiceTest {
                 LocalDate.of(2025,01,01), LocalTime.of(16,00));
 
         //when
-        boardWriteService.update(savedAccount.getId(), savedBoard.getId(), boardUpdateRequest);
+        boardWriteService.update(savedAccount, savedBoard.getId(), boardUpdateRequest);
 
         //then
         Board board = boardRepository.findById(savedBoard.getId()).stream().findFirst().orElseThrow();
@@ -138,7 +138,7 @@ class BoardWriteServiceTest {
 
         //when
         AlarmTodoListException exception = assertThrows(AlarmTodoListException.class,
-                () -> boardWriteService.update(savedAccount.getId(), -1L, boardUpdateRequest));
+                () -> boardWriteService.update(savedAccount, -1L, boardUpdateRequest));
 
         //then
         assertThat(exception).isInstanceOf(AlarmTodoListException.class);
@@ -157,7 +157,7 @@ class BoardWriteServiceTest {
                 savedBoard.getBoardDate(), savedBoard.getBoardTime());
 
         //when
-        boardWriteService.update(savedAccount.getId(), savedBoard.getId(), boardUpdateRequest);
+        boardWriteService.update(savedAccount, savedBoard.getId(), boardUpdateRequest);
 
         //then
         Board board = boardRepository.findById(savedBoard.getId()).stream().findFirst().orElseThrow();
@@ -179,7 +179,7 @@ class BoardWriteServiceTest {
                 savedBoard.getBoardDate(), savedBoard.getBoardTime());
 
         //when
-        boardWriteService.update(savedAccount.getId(), savedBoard.getId(), boardUpdateRequest);
+        boardWriteService.update(savedAccount, savedBoard.getId(), boardUpdateRequest);
 
         //then
         Board board = boardRepository.findById(savedBoard.getId()).stream().findFirst().orElseThrow();
@@ -201,7 +201,7 @@ class BoardWriteServiceTest {
                 LocalDate.of(2025,01,02), savedBoard.getBoardTime());
 
         //when
-        boardWriteService.update(savedAccount.getId(), savedBoard.getId(), boardUpdateRequest);
+        boardWriteService.update(savedAccount, savedBoard.getId(), boardUpdateRequest);
 
         //then
         Board board = boardRepository.findById(savedBoard.getId()).stream().findFirst().orElseThrow();
@@ -223,7 +223,7 @@ class BoardWriteServiceTest {
                 savedBoard.getBoardDate(), LocalTime.of(10,00));
 
         //when
-        boardWriteService.update(savedAccount.getId(), savedBoard.getId(), boardUpdateRequest);
+        boardWriteService.update(savedAccount, savedBoard.getId(), boardUpdateRequest);
 
         //then
         Board board = boardRepository.findById(savedBoard.getId()).stream().findFirst().orElseThrow();

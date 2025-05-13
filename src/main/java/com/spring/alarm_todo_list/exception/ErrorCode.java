@@ -15,7 +15,9 @@ public enum ErrorCode {
     NOT_MATCH_EMAIL_PASSWORD(HttpStatus.BAD_REQUEST, "이메일 또는 비밀번호가 일치하지 않습니다."),
     EXPIRE_REFRESH_TOKEN(HttpStatus.BAD_REQUEST, "이미 만료된 토큰입니다."),
     NOT_FOUND_LOGIN_ACCOUNT(HttpStatus.NOT_FOUND, "로그아웃 된 사용자입니다."),
-    NOT_MATCH_REFRESH_TOKEN(HttpStatus.BAD_REQUEST, "refresh 토큰이 일치하지 않습니다.");
+    NOT_MATCH_REFRESH_TOKEN(HttpStatus.BAD_REQUEST, "refresh 토큰이 일치하지 않습니다."),
+    EMPTY_JWT_TOKEN(HttpStatus.BAD_REQUEST, "JWT 토큰이 존재하지 않습니다."),
+    AUTH_INVALID_TOKEN(HttpStatus.BAD_REQUEST, "잘못된 토큰입니다.");
 
     private final HttpStatus httpStatus;
     private final String message;
