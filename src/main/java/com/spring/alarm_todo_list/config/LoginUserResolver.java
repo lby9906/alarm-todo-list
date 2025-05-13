@@ -33,10 +33,12 @@ public class LoginUserResolver implements HandlerMethodArgumentResolver {
         if (token == null || token.isEmpty()) {
             throw new AlarmTodoListException(ErrorCode.EMPTY_JWT_TOKEN);
         }
-        if (!token.startsWith("Bearer ")) {
+
+        String[] split = token.split(" ");
+        if (split.length != 2 || !split[0].equals("Bearer")) {
             throw new AlarmTodoListException(ErrorCode.AUTH_INVALID_TOKEN);
         }
-        token = token.substring(7);
+        token = split[1];
 
         if (!jwtTokenProvider.validateTokenExceptExpiration(token)) {
             throw new UnauthorizedActionException(ErrorCode.AUTH_INVALID_TOKEN.getMessage());
