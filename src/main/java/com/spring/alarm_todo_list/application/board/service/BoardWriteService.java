@@ -18,12 +18,9 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class BoardWriteService {
 
-    private final AccountRepository accountRepository;
     private final BoardRepository boardRepository;
 
-    public String create(Long accountId, BoardRequest boardRequest) {
-        Account account = accountRepository.findById(accountId).orElseThrow(() -> new AlarmTodoListException(ErrorCode.NOT_FOUND_ACCOUNT));
-
+    public String create(Account account, BoardRequest boardRequest) {
         Board board = Board.of(boardRequest.getTitle(), boardRequest.getContent(), boardRequest.getBoardDate(), boardRequest.getBoardTime(),
                 BoardType.TODO, account);
 
@@ -31,8 +28,7 @@ public class BoardWriteService {
         return "일정 등록 성공";
     }
 
-    public String update(Long accountId, Long boardId ,BoardUpdateRequest boardUpdateRequest) {
-        Account account = accountRepository.findById(accountId).orElseThrow(() -> new AlarmTodoListException(ErrorCode.NOT_FOUND_ACCOUNT));
+    public String update(Account account, Long boardId ,BoardUpdateRequest boardUpdateRequest) {
         Board board = boardRepository.findByIdAndAccountId(boardId, account.getId()).orElseThrow(() -> new AlarmTodoListException(ErrorCode.NOT_FOUND_ACCOUNT_REGISTER_BOARD));
 
         board.update(boardUpdateRequest.getTitle(), boardUpdateRequest.getContent(), boardUpdateRequest.getBoardDate(), boardUpdateRequest.getBoardTime());
