@@ -1,6 +1,8 @@
 package com.spring.alarm_todo_list.exception;
 
 import lombok.Builder;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -12,6 +14,7 @@ import java.util.Map;
 
 @RestControllerAdvice
 @Builder
+@RequiredArgsConstructor
 public class GlobalExceptionHandler {
 
     private final ErrorHandler errorHandler;
