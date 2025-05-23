@@ -17,7 +17,8 @@ public enum ErrorCode {
     NOT_FOUND_LOGIN_ACCOUNT(HttpStatus.NOT_FOUND, "로그아웃 된 사용자입니다."),
     NOT_MATCH_REFRESH_TOKEN(HttpStatus.BAD_REQUEST, "refresh 토큰이 일치하지 않습니다."),
     EMPTY_JWT_TOKEN(HttpStatus.BAD_REQUEST, "JWT 토큰이 존재하지 않습니다."),
-    AUTH_INVALID_TOKEN(HttpStatus.BAD_REQUEST, "잘못된 토큰입니다.");
+    AUTH_INVALID_TOKEN(HttpStatus.BAD_REQUEST, "잘못된 토큰입니다."),
+    NOT_FOUNT_ACCOUNT_INFO(HttpStatus.NOT_FOUND, "회원 정보를 찾을 수 없습니다.");
 
     private final HttpStatus httpStatus;
     private final String message;

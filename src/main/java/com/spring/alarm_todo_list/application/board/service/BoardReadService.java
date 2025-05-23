@@ -1,5 +1,6 @@
 package com.spring.alarm_todo_list.application.board.service;
 
+import com.spring.alarm_todo_list.application.account.dto.request.AccountInfo;
 import com.spring.alarm_todo_list.application.board.dto.response.BoardListResponse;
 import com.spring.alarm_todo_list.application.board.dto.response.BoardResponse;
 import com.spring.alarm_todo_list.domain.account.entity.Account;
@@ -20,12 +21,12 @@ public class BoardReadService {
 
     private final BoardRepository boardRepository;
 
-    public BoardResponse findAll(Account account, LocalDate boardDate) {
+    public BoardResponse findAll(AccountInfo accountInfo, LocalDate boardDate) {
 
         if (boardDate == null) {
             boardDate = LocalDate.now();
         }
-        List<Board> boardList = boardRepository.findAllBoardAndAccountId(account.getId(), boardDate);
+        List<Board> boardList = boardRepository.findAllBoardAndAccountId(accountInfo.getId(), boardDate);
 
         List<BoardListResponse> boardListResponses = boardList.stream()
                 .map(list -> new BoardListResponse(list.getId(),
@@ -33,6 +34,6 @@ public class BoardReadService {
                         list.getBoardTime(), list.getBoardType()))
                 .collect(Collectors.toList());
 
-        return new BoardResponse(account.getNickName(), boardListResponses);
+        return new BoardResponse(accountInfo.getNickName(), boardListResponses);
     }
 }

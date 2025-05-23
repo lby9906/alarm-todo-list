@@ -1,5 +1,6 @@
 package com.spring.alarm_todo_list.application.board.service;
 
+import com.spring.alarm_todo_list.application.account.dto.request.AccountInfo;
 import com.spring.alarm_todo_list.application.board.dto.request.BoardRequest;
 import com.spring.alarm_todo_list.application.board.dto.request.BoardUpdateRequest;
 import com.spring.alarm_todo_list.domain.account.entity.Account;
@@ -19,8 +20,16 @@ import org.springframework.transaction.annotation.Transactional;
 public class BoardWriteService {
 
     private final BoardRepository boardRepository;
+    private final AccountRepository accountRepository;
 
-    public String create(Account account, BoardRequest boardRequest) {
+    public String create(AccountInfo accountInfo, BoardRequest boardRequest) {
+        if (accountInfo == null) {
+            throw new AlarmTodoListException(ErrorCode.NOT_FOUNT_ACCOUNT_INFO);
+        }
+
+        Account account = accountRepository.findById(accountInfo.getId()).orElseThrow(
+                () -> new AlarmTodoListException(ErrorCode.NOT_FOUND_ACCOUNT));
+
         Board board = Board.of(boardRequest.getTitle(), boardRequest.getContent(), boardRequest.getBoardDate(), boardRequest.getBoardTime(),
                 BoardType.TODO, account);
 
@@ -28,7 +37,14 @@ public class BoardWriteService {
         return "일정 등록 성공";
     }
 
-    public String update(Account account, Long boardId ,BoardUpdateRequest boardUpdateRequest) {
+    public String update(AccountInfo accountInfo, Long boardId ,BoardUpdateRequest boardUpdateRequest) {
+        if (accountInfo == null) {
+            throw new AlarmTodoListException(ErrorCode.NOT_FOUNT_ACCOUNT_INFO);
+        }
+
+        Account account = accountRepository.findById(accountInfo.getId()).orElseThrow(
+                () -> new AlarmTodoListException(ErrorCode.NOT_FOUND_ACCOUNT));
+
         Board board = boardRepository.findByIdAndAccountId(boardId, account.getId()).orElseThrow(() -> new AlarmTodoListException(ErrorCode.NOT_FOUND_ACCOUNT_REGISTER_BOARD));
 
         board.update(boardUpdateRequest.getTitle(), boardUpdateRequest.getContent(), boardUpdateRequest.getBoardDate(), boardUpdateRequest.getBoardTime());

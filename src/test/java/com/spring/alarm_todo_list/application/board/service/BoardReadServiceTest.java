@@ -1,5 +1,6 @@
 package com.spring.alarm_todo_list.application.board.service;
 
+import com.spring.alarm_todo_list.application.account.dto.request.AccountInfo;
 import com.spring.alarm_todo_list.domain.account.entity.Account;
 import com.spring.alarm_todo_list.domain.account.enums.LoginType;
 import com.spring.alarm_todo_list.domain.account.enums.Role;
@@ -56,6 +57,7 @@ class BoardReadServiceTest {
     public void findAll() {
         //given
         Account savedAccount = createAccount();
+        AccountInfo accountInfo = AccountInfo.from(savedAccount);
 
         createBoard(
                 "test제목",
@@ -73,7 +75,7 @@ class BoardReadServiceTest {
                 savedAccount);
 
         //when
-        boardReadService.findAll(savedAccount, LocalDate.of(2025, 03, 11));
+        boardReadService.findAll(accountInfo, LocalDate.of(2025, 03, 11));
 
         //then
         List<Board> findAllBoard = boardRepository.findAllBoardAndAccountId(savedAccount.getId(), LocalDate.of(2025, 3, 11));

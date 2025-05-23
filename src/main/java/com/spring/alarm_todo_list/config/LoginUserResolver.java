@@ -1,7 +1,9 @@
 package com.spring.alarm_todo_list.config;
 
+import com.spring.alarm_todo_list.application.account.dto.request.AccountInfo;
 import com.spring.alarm_todo_list.application.jwt.JwtTokenProvider;
 import com.spring.alarm_todo_list.application.login.service.LoginService;
+import com.spring.alarm_todo_list.domain.account.entity.Account;
 import com.spring.alarm_todo_list.domain.account.repository.AccountRepository;
 import com.spring.alarm_todo_list.exception.AlarmTodoListException;
 import com.spring.alarm_todo_list.exception.ErrorCode;
@@ -28,25 +30,27 @@ public class LoginUserResolver implements HandlerMethodArgumentResolver {
     }
 
     @Override
-    public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+    public AccountInfo resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         String token = webRequest.getHeader("Authorization");
         if (token == null || token.isEmpty()) {
             throw new AlarmTodoListException(ErrorCode.EMPTY_JWT_TOKEN);
         }
 
-        String[] split = token.split(" ");
-        if (split.length != 2 || !split[0].equals("Bearer")) {
+        String[] tokenSplit = token.split(" ");
+        if (tokenSplit.length != 2 || !tokenSplit[0].equals("Bearer")) {
             throw new AlarmTodoListException(ErrorCode.AUTH_INVALID_TOKEN);
         }
-        token = split[1];
+        token = tokenSplit[1];
 
         if (!jwtTokenProvider.validateTokenExceptExpiration(token)) {
             throw new UnauthorizedActionException(ErrorCode.AUTH_INVALID_TOKEN.getMessage());
         }
 
         Authentication authentication = jwtTokenProvider.getAuthentication(token);
-        String str = authentication.getName();
+        String authenticationName = authentication.getName();
 
-        return accountRepository.findByEmail(str).orElseThrow(() -> new AlarmTodoListException(ErrorCode.NOT_FOUND_ACCOUNT));
+        Account account = accountRepository.findByEmail(authenticationName).orElseThrow(() -> new AlarmTodoListException(ErrorCode.NOT_FOUND_ACCOUNT));
+
+        return AccountInfo.from(account);
     }
 }
