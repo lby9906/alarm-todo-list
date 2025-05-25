@@ -6,5 +6,5 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface BoardTodoQueryDslRepository {
-    List<Board> findAllBoardAndAccountId(Long accountId, LocalDate localDate);
+    List<Board> findAllByBoardDateAndAccountId(Long accountId, LocalDate localDate);
 }

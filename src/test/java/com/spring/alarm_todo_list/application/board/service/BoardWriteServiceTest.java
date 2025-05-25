@@ -1,5 +1,6 @@
 package com.spring.alarm_todo_list.application.board.service;
 
+import com.spring.alarm_todo_list.application.account.dto.request.AccountInfo;
 import com.spring.alarm_todo_list.application.board.dto.request.BoardRequest;
 import com.spring.alarm_todo_list.application.board.dto.request.BoardUpdateRequest;
 import com.spring.alarm_todo_list.domain.account.entity.Account;
@@ -58,6 +59,7 @@ class BoardWriteServiceTest {
     public void existAccountCreateTodo() {
         //given
         Account savedAccount = createAccount();
+        AccountInfo accountInfo = AccountInfo.from(savedAccount);
 
         String title = "00공부";
         String content = "1-2범위 공부하기";
@@ -67,14 +69,13 @@ class BoardWriteServiceTest {
         BoardRequest boardRequest = new BoardRequest(title, content, boardDate, boardTime);
 
         //when
-        boardWriteService.create(savedAccount.getId(), boardRequest);
+        boardWriteService.create(accountInfo.getId(), boardRequest);
 
 
         //then
         Board board = boardRepository.findAll().stream().findFirst().orElseThrow();
         Account account = board.getAccount();
-        assertThat(savedAccount.getId()).isEqualTo(account.getId());
-        assertThat(savedAccount.getPassword()).isEqualTo(account.getPassword());
+        assertThat(accountInfo.getId()).isEqualTo(account.getId());
         assertThat(board.getTitle()).isEqualTo(title);
         assertThat(board.getContent()).isEqualTo(content);
         assertThat(board.getBoardDate()).isEqualTo(boardDate);
@@ -94,32 +95,33 @@ class BoardWriteServiceTest {
 
         //when
         AlarmTodoListException exception = assertThrows(AlarmTodoListException.class,
-                () -> boardWriteService.create(-1L, boardRequest));
+                () -> boardWriteService.create(null, boardRequest));
 
         //then
         assertThat(exception).isInstanceOf(AlarmTodoListException.class);
-        assertThat(exception.getErrorCode().getMessage()).isEqualTo("회원을 찾을 수 없습니다.");
+        assertThat(exception.getErrorCode().getMessage()).isEqualTo("회원 정보를 찾을 수 없습니다.");
     }
 
     @Test
+
     @DisplayName("존재하는 회원이 등록한 일정을 수정 시 정상적으로 수정된다.")
     @Transactional
     public void existAccountUpdateTodo() {
         //given
         Account savedAccount = createAccount();
+        AccountInfo accountInfo = AccountInfo.from(savedAccount);
         Board savedBoard = createBoard(savedAccount);
 
         BoardUpdateRequest boardUpdateRequest = new BoardUpdateRequest("운동하기", "상체운동하기",
                 LocalDate.of(2025,01,01), LocalTime.of(16,00));
 
         //when
-        boardWriteService.update(savedAccount.getId(), savedBoard.getId(), boardUpdateRequest);
+        boardWriteService.update(accountInfo, savedBoard.getId(), boardUpdateRequest);
 
         //then
         Board board = boardRepository.findById(savedBoard.getId()).stream().findFirst().orElseThrow();
         Account account = board.getAccount();
-        assertThat(savedAccount.getId()).isEqualTo(account.getId());
-        assertThat(savedAccount.getPassword()).isEqualTo(account.getPassword());
+        assertThat(accountInfo.getId()).isEqualTo(account.getId());
         assertThat(board.getTitle()).isEqualTo(boardUpdateRequest.getTitle());
         assertThat(board.getContent()).isEqualTo(boardUpdateRequest.getContent());
         assertThat(board.getBoardDate()).isEqualTo(boardUpdateRequest.getBoardDate());
@@ -131,6 +133,7 @@ class BoardWriteServiceTest {
     public void notExistBoardUpdateTodoException() {
         //given
         Account savedAccount = createAccount();
+        AccountInfo accountInfo = AccountInfo.from(savedAccount);
         Board savedBoard = createBoard(savedAccount);
 
         BoardUpdateRequest boardUpdateRequest = new BoardUpdateRequest("운동하기", "상체운동하기",
@@ -138,7 +141,7 @@ class BoardWriteServiceTest {
 
         //when
         AlarmTodoListException exception = assertThrows(AlarmTodoListException.class,
-                () -> boardWriteService.update(savedAccount.getId(), -1L, boardUpdateRequest));
+                () -> boardWriteService.update(accountInfo, -1L, boardUpdateRequest));
 
         //then
         assertThat(exception).isInstanceOf(AlarmTodoListException.class);
@@ -151,19 +154,19 @@ class BoardWriteServiceTest {
     public void existAccountUpdateTodoTitle() {
         //given
         Account savedAccount = createAccount();
+        AccountInfo accountInfo = AccountInfo.from(savedAccount);
         Board savedBoard = createBoard(savedAccount);
 
         BoardUpdateRequest boardUpdateRequest = new BoardUpdateRequest("운동하기", savedBoard.getContent(),
                 savedBoard.getBoardDate(), savedBoard.getBoardTime());
 
         //when
-        boardWriteService.update(savedAccount.getId(), savedBoard.getId(), boardUpdateRequest);
+        boardWriteService.update(accountInfo, savedBoard.getId(), boardUpdateRequest);
 
         //then
         Board board = boardRepository.findById(savedBoard.getId()).stream().findFirst().orElseThrow();
         Account account = board.getAccount();
-        assertThat(savedAccount.getId()).isEqualTo(account.getId());
-        assertThat(savedAccount.getPassword()).isEqualTo(account.getPassword());
+        assertThat(accountInfo.getId()).isEqualTo(account.getId());
         assertThat(board.getTitle()).isEqualTo(boardUpdateRequest.getTitle());
     }
 
@@ -173,19 +176,19 @@ class BoardWriteServiceTest {
     public void existAccountUpdateTodoContent() {
         //given
         Account savedAccount = createAccount();
+        AccountInfo accountInfo = AccountInfo.from(savedAccount);
         Board savedBoard = createBoard(savedAccount);
 
         BoardUpdateRequest boardUpdateRequest = new BoardUpdateRequest(savedBoard.getTitle(), "상체운동하기",
                 savedBoard.getBoardDate(), savedBoard.getBoardTime());
 
         //when
-        boardWriteService.update(savedAccount.getId(), savedBoard.getId(), boardUpdateRequest);
+        boardWriteService.update(accountInfo, savedBoard.getId(), boardUpdateRequest);
 
         //then
         Board board = boardRepository.findById(savedBoard.getId()).stream().findFirst().orElseThrow();
         Account account = board.getAccount();
-        assertThat(savedAccount.getId()).isEqualTo(account.getId());
-        assertThat(savedAccount.getPassword()).isEqualTo(account.getPassword());
+        assertThat(accountInfo.getId()).isEqualTo(account.getId());
         assertThat(board.getContent()).isEqualTo(boardUpdateRequest.getContent());
     }
 
@@ -195,19 +198,19 @@ class BoardWriteServiceTest {
     public void existAccountUpdateTodoBoardDate() {
         //given
         Account savedAccount = createAccount();
+        AccountInfo accountInfo = AccountInfo.from(savedAccount);
         Board savedBoard = createBoard(savedAccount);
 
         BoardUpdateRequest boardUpdateRequest = new BoardUpdateRequest(savedBoard.getTitle(), savedBoard.getContent(),
                 LocalDate.of(2025,01,02), savedBoard.getBoardTime());
 
         //when
-        boardWriteService.update(savedAccount.getId(), savedBoard.getId(), boardUpdateRequest);
+        boardWriteService.update(accountInfo, savedBoard.getId(), boardUpdateRequest);
 
         //then
         Board board = boardRepository.findById(savedBoard.getId()).stream().findFirst().orElseThrow();
         Account account = board.getAccount();
-        assertThat(savedAccount.getId()).isEqualTo(account.getId());
-        assertThat(savedAccount.getPassword()).isEqualTo(account.getPassword());
+        assertThat(accountInfo.getId()).isEqualTo(account.getId());
         assertThat(board.getBoardDate()).isEqualTo(boardUpdateRequest.getBoardDate());
     }
 
@@ -217,19 +220,19 @@ class BoardWriteServiceTest {
     public void existAccountUpdateTodoBoardTime() {
         //given
         Account savedAccount = createAccount();
+        AccountInfo accountInfo = AccountInfo.from(savedAccount);
         Board savedBoard = createBoard(savedAccount);
 
         BoardUpdateRequest boardUpdateRequest = new BoardUpdateRequest(savedBoard.getTitle(), savedBoard.getContent(),
                 savedBoard.getBoardDate(), LocalTime.of(10,00));
 
         //when
-        boardWriteService.update(savedAccount.getId(), savedBoard.getId(), boardUpdateRequest);
+        boardWriteService.update(accountInfo, savedBoard.getId(), boardUpdateRequest);
 
         //then
         Board board = boardRepository.findById(savedBoard.getId()).stream().findFirst().orElseThrow();
         Account account = board.getAccount();
-        assertThat(savedAccount.getId()).isEqualTo(account.getId());
-        assertThat(savedAccount.getPassword()).isEqualTo(account.getPassword());
+        assertThat(accountInfo.getId()).isEqualTo(account.getId());
         assertThat(board.getBoardTime()).isEqualTo(boardUpdateRequest.getBoardTime());
     }
 }
