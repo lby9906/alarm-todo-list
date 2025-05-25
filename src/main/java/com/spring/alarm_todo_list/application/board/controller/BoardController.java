@@ -24,7 +24,7 @@ public class BoardController {
 
     @PostMapping
     public String create(@LoginUser AccountInfo accountInfo, @RequestBody @Valid BoardRequest boardRequest){
-        return boardWriteService.create(accountInfo, boardRequest);
+        return boardWriteService.create(accountInfo.getId(), boardRequest);
     }
 
     @GetMapping

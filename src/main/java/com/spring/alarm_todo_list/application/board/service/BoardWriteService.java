@@ -22,12 +22,8 @@ public class BoardWriteService {
     private final BoardRepository boardRepository;
     private final AccountRepository accountRepository;
 
-    public String create(AccountInfo accountInfo, BoardRequest boardRequest) {
-        if (accountInfo == null) {
-            throw new AlarmTodoListException(ErrorCode.NOT_FOUNT_ACCOUNT_INFO);
-        }
-
-        Account account = accountRepository.findById(accountInfo.getId()).orElseThrow(
+    public String create(Long accountId, BoardRequest boardRequest) {
+        Account account = accountRepository.findById(accountId).orElseThrow(
                 () -> new AlarmTodoListException(ErrorCode.NOT_FOUND_ACCOUNT));
 
         Board board = Board.of(boardRequest.getTitle(), boardRequest.getContent(), boardRequest.getBoardDate(), boardRequest.getBoardTime(),
@@ -38,10 +34,6 @@ public class BoardWriteService {
     }
 
     public String update(AccountInfo accountInfo, Long boardId ,BoardUpdateRequest boardUpdateRequest) {
-        if (accountInfo == null) {
-            throw new AlarmTodoListException(ErrorCode.NOT_FOUNT_ACCOUNT_INFO);
-        }
-
         Account account = accountRepository.findById(accountInfo.getId()).orElseThrow(
                 () -> new AlarmTodoListException(ErrorCode.NOT_FOUND_ACCOUNT));
 

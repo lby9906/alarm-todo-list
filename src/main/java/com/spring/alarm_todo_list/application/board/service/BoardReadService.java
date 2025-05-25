@@ -26,7 +26,7 @@ public class BoardReadService {
         if (boardDate == null) {
             boardDate = LocalDate.now();
         }
-        List<Board> boardList = boardRepository.findAllBoardAndAccountId(accountInfo.getId(), boardDate);
+        List<Board> boardList = boardRepository.findAllByBoardDateAndAccountId(accountInfo.getId(), boardDate);
 
         List<BoardListResponse> boardListResponses = boardList.stream()
                 .map(list -> new BoardListResponse(list.getId(),

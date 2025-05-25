@@ -69,7 +69,7 @@ class BoardWriteServiceTest {
         BoardRequest boardRequest = new BoardRequest(title, content, boardDate, boardTime);
 
         //when
-        boardWriteService.create(accountInfo, boardRequest);
+        boardWriteService.create(accountInfo.getId(), boardRequest);
 
 
         //then
