@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface BoardTodoQueryDslRepository {
     List<Board> findAllByBoardDateAndAccountId(Long accountId, LocalDate localDate);
+
+    List<Board> findSearchByBoardTitleAndBoardDateAndBoardContentAndAccountId(String boardTitle, LocalDate localDate, String boardContent, Long accountId);
 }

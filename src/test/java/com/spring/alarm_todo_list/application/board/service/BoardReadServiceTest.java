@@ -1,6 +1,7 @@
 package com.spring.alarm_todo_list.application.board.service;
 
 import com.spring.alarm_todo_list.application.account.dto.request.AccountInfo;
+import com.spring.alarm_todo_list.application.board.dto.response.BoardSearchResponse;
 import com.spring.alarm_todo_list.domain.account.entity.Account;
 import com.spring.alarm_todo_list.domain.account.enums.LoginType;
 import com.spring.alarm_todo_list.domain.account.enums.Role;
@@ -8,7 +9,6 @@ import com.spring.alarm_todo_list.domain.account.repository.AccountRepository;
 import com.spring.alarm_todo_list.domain.board.entity.Board;
 import com.spring.alarm_todo_list.domain.board.enums.BoardType;
 import com.spring.alarm_todo_list.domain.board.repository.BoardRepository;
-import com.spring.alarm_todo_list.exception.AlarmTodoListException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,6 +22,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static reactor.core.publisher.Mono.when;
 
 @SpringBootTest
 class BoardReadServiceTest {
@@ -78,7 +79,7 @@ class BoardReadServiceTest {
         boardReadService.findAll(accountInfo, LocalDate.of(2025, 03, 11));
 
         //then
-        List<Board> findAllBoard = boardRepository.findAllBoardAndAccountId(savedAccount.getId(), LocalDate.of(2025, 3, 11));
+        List<Board> findAllBoard = boardRepository.findAllByBoardDateAndAccountId(savedAccount.getId(), LocalDate.of(2025, 3, 11));
 
         assertThat(findAllBoard).hasSize(2);
 
@@ -96,26 +97,28 @@ class BoardReadServiceTest {
     }
 
     @Test
-    @DisplayName("todolist 조회 시 회원이 존재하지 않을 경우 예외가 발생한다.")
-    public void occurAccountNullException() {
+    @DisplayName("회원이 등록한 todo를 제목, 날짜, 내용으로 검색하면 검색한 todo가 성공적으로 조회된다.")
+    public void findSearch() {
         //given
         Account savedAccount = createAccount();
+        AccountInfo accountInfo = AccountInfo.from(savedAccount);
 
         createBoard(
                 "test제목",
                 "test내용",
-                LocalDate.of(2025, 03, 11),
+                LocalDate.of(2025, 05, 30),
                 LocalTime.of(23, 11),
                 BoardType.TODO,
                 savedAccount);
 
         //when
-        AlarmTodoListException exception = assertThrows(AlarmTodoListException.class,
-                () -> boardReadService.findAll(null, LocalDate.of(2025,03,11)));
+        boardReadService.findSearch("test", LocalDate.of(2025, 05, 30), "test", accountInfo);
 
         //then
-        assertThat(exception).isInstanceOf(AlarmTodoListException.class);
-        assertThat(exception.getErrorCode().getMessage()).isEqualTo("회원을 찾을 수 없습니다.");
+        List<Board> search = boardRepository.findSearchByBoardTitleAndBoardDateAndBoardContentAndAccountId("test", LocalDate.of(2025, 05, 30), "test", accountInfo.getId());
 
+        assertThat(search).hasSize(1);
+        assertThat(search).extracting("title", "content", "boardDate")
+                .containsExactly(tuple("test제목", "test내용", LocalDate.of(2025, 05, 30)));
     }
 }
