@@ -1,6 +1,7 @@
 package com.spring.alarm_todo_list.domain.board.repository;
 
 import com.spring.alarm_todo_list.QuerydslConfig;
+import com.spring.alarm_todo_list.application.board.dto.request.BoardSearchRequest;
 import com.spring.alarm_todo_list.domain.account.entity.Account;
 import com.spring.alarm_todo_list.domain.account.enums.LoginType;
 import com.spring.alarm_todo_list.domain.account.enums.Role;
@@ -127,8 +128,10 @@ class BoardRepositoryImplTest {
         boardRepository.save(board);
 
         //when
-        List<Board> search = boardRepositoryImpl.findSearchByBoardTitleAndBoardDateAndBoardContentAndAccountId(
-                board.getTitle(), board.getBoardDate(), board.getContent(), account.getId());
+        BoardSearchRequest boardSearchRequest = new BoardSearchRequest(board.getTitle(), board.getBoardDate(), board.getContent(), 1, 10);
+
+        List<Board> search = boardRepositoryImpl.findAllSearchByBoardTitleAndBoardDateAndBoardContentAndAccountId(
+                boardSearchRequest, account.getId());
 
         //then
         assertThat(search).hasSize(1);
@@ -156,8 +159,10 @@ class BoardRepositoryImplTest {
         boardRepository.save(board);
 
         //when
-        List<Board> search = boardRepositoryImpl.findSearchByBoardTitleAndBoardDateAndBoardContentAndAccountId(
-                board.getTitle(), board.getBoardDate(), board.getContent(), account.getId());
+        BoardSearchRequest boardSearchRequest = new BoardSearchRequest(board.getTitle(), board.getBoardDate(), board.getContent(), 1, 10);
+
+        List<Board> search = boardRepositoryImpl.findAllSearchByBoardTitleAndBoardDateAndBoardContentAndAccountId(
+                boardSearchRequest, account.getId());
 
         //then
         assertThat(search).hasSize(1);
@@ -184,8 +189,10 @@ class BoardRepositoryImplTest {
         boardRepository.save(board);
 
         //when
-        List<Board> search = boardRepositoryImpl.findSearchByBoardTitleAndBoardDateAndBoardContentAndAccountId(
-                board.getTitle(), board.getBoardDate(), board.getContent(), account.getId());
+        BoardSearchRequest boardSearchRequest = new BoardSearchRequest(board.getTitle(), board.getBoardDate(), board.getContent(), 1, 10);
+
+        List<Board> search = boardRepositoryImpl.findAllSearchByBoardTitleAndBoardDateAndBoardContentAndAccountId(
+                boardSearchRequest, account.getId());
 
         //then
         assertThat(search).hasSize(1);
@@ -212,8 +219,10 @@ class BoardRepositoryImplTest {
         boardRepository.save(board);
 
         //when
-        List<Board> search = boardRepositoryImpl.findSearchByBoardTitleAndBoardDateAndBoardContentAndAccountId(
-                board.getTitle(), board.getBoardDate(), board.getContent(), account.getId());
+        BoardSearchRequest boardSearchRequest = new BoardSearchRequest(board.getTitle(), board.getBoardDate(), board.getContent(), 1, 10);
+
+        List<Board> search = boardRepositoryImpl.findAllSearchByBoardTitleAndBoardDateAndBoardContentAndAccountId(
+                boardSearchRequest, account.getId());
 
         //then
         assertThat(search).hasSize(1);
@@ -240,8 +249,10 @@ class BoardRepositoryImplTest {
         boardRepository.save(board);
 
         //when
-        List<Board> search = boardRepositoryImpl.findSearchByBoardTitleAndBoardDateAndBoardContentAndAccountId(
-                "둥이", board.getBoardDate(), board.getContent(), account.getId());
+        BoardSearchRequest boardSearchRequest = new BoardSearchRequest("둥이", board.getBoardDate(), board.getContent(), 1, 10);
+
+        List<Board> search = boardRepositoryImpl.findAllSearchByBoardTitleAndBoardDateAndBoardContentAndAccountId(
+                boardSearchRequest, account.getId());
 
         //then
         assertThat(search).isEmpty();
@@ -265,8 +276,10 @@ class BoardRepositoryImplTest {
         boardRepository.save(board);
 
         //when
-        List<Board> search = boardRepositoryImpl.findSearchByBoardTitleAndBoardDateAndBoardContentAndAccountId(
-                board.getTitle(), board.getBoardDate(), "둥이", account.getId());
+        BoardSearchRequest boardSearchRequest = new BoardSearchRequest(board.getTitle(), board.getBoardDate(), "둥이", 1, 10);
+
+        List<Board> search = boardRepositoryImpl.findAllSearchByBoardTitleAndBoardDateAndBoardContentAndAccountId(
+                boardSearchRequest, account.getId());
 
         //then
         assertThat(search).isEmpty();
@@ -290,8 +303,10 @@ class BoardRepositoryImplTest {
         boardRepository.save(board);
 
         //when
-        List<Board> search = boardRepositoryImpl.findSearchByBoardTitleAndBoardDateAndBoardContentAndAccountId(
-                board.getTitle(), LocalDate.of(2025,05,30), board.getContent(), account.getId());
+        BoardSearchRequest boardSearchRequest = new BoardSearchRequest(board.getTitle(), LocalDate.of(2025,05,30), board.getContent(), 1, 10);
+
+        List<Board> search = boardRepositoryImpl.findAllSearchByBoardTitleAndBoardDateAndBoardContentAndAccountId(
+                boardSearchRequest, account.getId());
 
         //then
         assertThat(search).isEmpty();

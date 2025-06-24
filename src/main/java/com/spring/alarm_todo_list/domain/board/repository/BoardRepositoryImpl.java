@@ -2,6 +2,7 @@ package com.spring.alarm_todo_list.domain.board.repository;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.spring.alarm_todo_list.application.board.dto.request.BoardSearchRequest;
 import com.spring.alarm_todo_list.domain.board.entity.Board;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -30,13 +31,31 @@ public class BoardRepositoryImpl implements BoardTodoQueryDslRepository {
     }
 
     @Override
-    public List<Board> findSearchByBoardTitleAndBoardDateAndBoardContentAndAccountId(String boardTitle, LocalDate boardDate, String boardContent, Long accountId) {
+    public List<Board> findAllSearchByBoardTitleAndBoardDateAndBoardContentAndAccountId(BoardSearchRequest boardSearchRequest ,Long accountId) {
         return jpaQueryFactory
                 .select(board)
                 .from(board)
                 .innerJoin(board.account, account)
-                .where(eqNotNullDate(boardDate), likeTitle(boardTitle), likeContent(boardContent) ,eqAccountId(accountId))
+                .where(eqNotNullDate(boardSearchRequest.getBoardDate()),
+                        likeTitle(boardSearchRequest.getBoardTitle()),
+                        likeContent(boardSearchRequest.getBoardContent())
+                        ,eqAccountId(accountId))
+                .offset((boardSearchRequest.getPage() - 1) * boardSearchRequest.getSize())
+                .limit(boardSearchRequest.getSize())
                 .fetch();
+    }
+
+    @Override
+    public Long countByBoard(BoardSearchRequest boardSearchRequest) {
+        return jpaQueryFactory
+                .select(board.count())
+                .from(board)
+                .where(
+                        likeTitle(boardSearchRequest.getBoardTitle())
+                        ,(likeContent(boardSearchRequest.getBoardContent()))
+                        ,(eqNotNullDate(boardSearchRequest.getBoardDate()))
+                )
+                .fetchOne();
     }
 
     private BooleanExpression eqNotNullDate(LocalDate boardDate){

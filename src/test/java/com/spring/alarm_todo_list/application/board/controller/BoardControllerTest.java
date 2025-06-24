@@ -3,12 +3,13 @@ package com.spring.alarm_todo_list.application.board.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.spring.alarm_todo_list.application.account.dto.request.AccountInfo;
+import com.spring.alarm_todo_list.application.board.dto.request.BoardSearchRequest;
 import com.spring.alarm_todo_list.application.board.dto.request.BoardUpdateRequest;
 import com.spring.alarm_todo_list.application.board.dto.response.BoardSearchListResponse;
-import com.spring.alarm_todo_list.application.board.dto.response.BoardSearchResponse;
 import com.spring.alarm_todo_list.application.board.service.BoardReadService;
 import com.spring.alarm_todo_list.application.board.service.BoardWriteService;
 import com.spring.alarm_todo_list.domain.board.enums.BoardType;
+import com.spring.alarm_todo_list.util.PaginationResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,6 +26,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -76,31 +78,114 @@ class BoardControllerTest {
     }
 
     @Test
-    @DisplayName("사용자가 등록한 일정을 검색할 시 성공적으로 처리된다.")
-    public void successTodoSearch() throws Exception {
+    @DisplayName("제목에 '둥이'를 포함한 Todo 검색할 시 성공적으로 처리된다.")
+    public void successTitleTodoSearch() throws Exception {
+        //given
+        String title = "둥이";
+        String content = "test내용";
+        LocalDate boardDate = LocalDate.of(2025, 05, 30);
+        LocalTime boardTime = LocalTime.of(23,11);
+
+        BoardSearchListResponse response = new BoardSearchListResponse(1L, title, content, boardDate, boardTime, BoardType.TODO);
+
+        PaginationResponse<BoardSearchListResponse> mockResponse = new PaginationResponse<BoardSearchListResponse>(
+            List.of(response), 1, 10, 1L);
+
+        when(boardReadService.findAll(any(AccountInfo.class), any(BoardSearchRequest.class)))
+                .thenReturn(mockResponse);
+
+        //when + then
+        mockMvc.perform(get("/board")
+                        .param("boardTitle", title)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.contents[0].title")
+                        .value(containsString("둥이")));
+    }
+
+    @Test
+    @DisplayName("내용에 '둥이'를 포함한 Todo 검색할 시 성공적으로 처리된다.")
+    public void successContentTodoSearch() throws Exception {
+        //given
+        String title = "test제목";
+        String content = "저희집 강아지는 둥이 입니다.";
+        LocalDate boardDate = LocalDate.of(2025, 05, 30);
+        LocalTime boardTime = LocalTime.of(23,11);
+
+        BoardSearchListResponse response = new BoardSearchListResponse(1L, title, content, boardDate, boardTime, BoardType.TODO);
+
+        PaginationResponse<BoardSearchListResponse> mockResponse = new PaginationResponse<BoardSearchListResponse>(
+                List.of(response), 1, 10, 1L);
+
+        when(boardReadService.findAll(any(AccountInfo.class), any(BoardSearchRequest.class)))
+                .thenReturn(mockResponse);
+
+        //when + then
+        mockMvc.perform(get("/board")
+                        .param("boardContent", content)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.contents[0].content")
+                        .value(containsString("둥이")));
+    }
+
+    @Test
+    @DisplayName("사용자가 검색한 날짜를 포함한 Todo 검색할 시 성공적으로 처리된다.")
+    public void successBoardDateTodoSearch() throws Exception {
         //given
         String title = "test제목";
         String content = "test내용";
         LocalDate boardDate = LocalDate.of(2025, 05, 30);
         LocalTime boardTime = LocalTime.of(23,11);
 
-        BoardSearchResponse mockResponse = new BoardSearchResponse(
-                List.of(new BoardSearchListResponse(1L, title, content ,boardDate, boardTime, BoardType.TODO)));
+        BoardSearchListResponse response = new BoardSearchListResponse(1L, title, content, boardDate, boardTime, BoardType.TODO);
 
-        when(boardReadService.findSearch(eq(title), eq(boardDate), eq(content), any(AccountInfo.class)))
+        PaginationResponse<BoardSearchListResponse> mockResponse = new PaginationResponse<BoardSearchListResponse>(
+                List.of(response), 1, 10, 1L);
+
+        when(boardReadService.findAll(any(AccountInfo.class), any(BoardSearchRequest.class)))
                 .thenReturn(mockResponse);
 
         //when + then
-        mockMvc.perform(get("/board/search")
-                .param("boardTitle", title)
-                .param("boardDate", boardDate.toString())
-                .param("boardContent", content)
-                .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/board")
+                        .param("boardDate", boardDate.toString())
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.boardSearchListResponses[0].title").value(title))
-                .andExpect(jsonPath("$.boardSearchListResponses[0].content").value(content))
-                .andExpect(jsonPath("$.boardSearchListResponses[0].boardDate[0]").value(2025))
-                .andExpect(jsonPath("$.boardSearchListResponses[0].boardDate[1]").value(5))
-                .andExpect(jsonPath("$.boardSearchListResponses[0].boardDate[2]").value(30));
+                .andExpect(jsonPath("$.contents[0].boardDate")
+                        .value(containsString(String.valueOf(LocalDate.of(2025,05,30)))));
+    }
+
+    @Test
+    @DisplayName("일정 제목, 내용, 날짜를 모두 포함한 Todo 검색할 시 성공적으로 처리된다.")
+    public void successFindAllTodoSearch() throws Exception {
+        //given
+        String title = "test제목";
+        String content = "test내용";
+        LocalDate boardDate = LocalDate.of(2025, 05, 30);
+        LocalTime boardTime = LocalTime.of(23,11);
+
+        BoardSearchListResponse response = new BoardSearchListResponse(1L, title, content, boardDate, boardTime, BoardType.TODO);
+
+        PaginationResponse<BoardSearchListResponse> mockResponse = new PaginationResponse<BoardSearchListResponse>(
+                List.of(response), 1, 10, 1L);
+
+        when(boardReadService.findAll(any(AccountInfo.class), any(BoardSearchRequest.class)))
+                .thenReturn(mockResponse);
+
+        //when + then
+        mockMvc.perform(get("/board")
+                        .param("title", title)
+                        .param("content", content)
+                        .param("boardDate", boardDate.toString())
+                        .param("page", "1")
+                        .param("size", "10")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.contents[0].title")
+                        .value(containsString("test제목")))
+                .andExpect(jsonPath("$.contents[0].content")
+                        .value(containsString("test내용")))
+                .andExpect(jsonPath("$.contents[0].boardDate")
+                        .value(containsString(String.valueOf(LocalDate.of(2025,05,30)))));
     }
 }
