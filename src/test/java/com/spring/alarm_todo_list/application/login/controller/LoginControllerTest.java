@@ -2,28 +2,30 @@ package com.spring.alarm_todo_list.application.login.controller;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.spring.alarm_todo_list.application.jwt.JwtTokenProvider;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.spring.alarm_todo_list.application.login.dto.request.AccountLoginRequestDto;
 import com.spring.alarm_todo_list.application.login.dto.AccountLoginResponseDto;
 import com.spring.alarm_todo_list.application.login.service.LoginService;
-import com.spring.alarm_todo_list.config.JwtAccessDeniedHandler;
-import com.spring.alarm_todo_list.config.JwtAuthenticationEntryPoint;
-import com.spring.alarm_todo_list.config.SecurityConfig;
 import com.spring.alarm_todo_list.exception.AlarmTodoListException;
 import com.spring.alarm_todo_list.exception.ErrorCode;
 import com.spring.alarm_todo_list.exception.ErrorHandler;
 import com.spring.alarm_todo_list.exception.GlobalExceptionHandler;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.Import;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -32,28 +34,30 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(LoginController.class)
-@Import({SecurityConfig.class, GlobalExceptionHandler.class, ErrorHandler.class})
-@AutoConfigureMockMvc(addFilters = false)
+@ExtendWith(MockitoExtension.class)
 class LoginControllerTest {
 
-    @Autowired
     MockMvc mockMvc;
 
-    @MockitoBean
+    @Mock
     LoginService loginService;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    ObjectMapper objectMapper;
 
-    @MockitoBean
-    JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    @InjectMocks
+    LoginController loginController;
 
-    @MockitoBean
-    JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    @Mock
+    private ErrorHandler errorHandler;
 
-    @MockitoBean
-    JwtTokenProvider jwtTokenProvider;
+    @BeforeEach
+    void setUp() {
+        objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        mockMvc = MockMvcBuilders.standaloneSetup(loginController)
+                .setControllerAdvice(new GlobalExceptionHandler(errorHandler))
+                .build();
+    }
 
     @Test
     @DisplayName("사용자가 정상적인 로그인 시 accessToken과 사용자 정보가 성공적으로 반환된다.")
@@ -86,6 +90,14 @@ class LoginControllerTest {
         AccountLoginRequestDto requestDto = new AccountLoginRequestDto("test@test.com", "0000");
 
         //when
+        when(errorHandler.handleExceptionInternal(any(ErrorCode.class)))
+                .thenAnswer(invocation -> {
+                    ErrorCode errorCode = invocation.getArgument(0);
+                    Map<String, Object> body = new HashMap<>();
+                    body.put("message", errorCode.getMessage());  // 에러 메시지
+                    return ResponseEntity.status(errorCode.getHttpStatus()).body(body);
+                });
+
         when(loginService.login(any(AccountLoginRequestDto.class)))
                 .thenThrow(new AlarmTodoListException(ErrorCode.NOT_MATCH_EMAIL_PASSWORD));
 
