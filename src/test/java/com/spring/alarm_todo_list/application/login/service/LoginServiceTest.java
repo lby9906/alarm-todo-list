@@ -35,7 +35,7 @@ class LoginServiceTest {
 
     @BeforeEach
     public void clear() {
-        accountRepository.deleteAllInBatch();
+        accountRepository.deleteAll();
     }
 
     private Account createAccount(String rawPassword) {
