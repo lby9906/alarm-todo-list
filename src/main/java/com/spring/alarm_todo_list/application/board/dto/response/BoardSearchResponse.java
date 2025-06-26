@@ -7,8 +7,7 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class BoardResponse {
-    private String nickName;
+public class BoardSearchResponse {
 
-    private List<BoardListResponse> boardListResponseList;
+    private List<BoardSearchListResponse> boardSearchListResponses;
 }
