@@ -1,5 +1,6 @@
 package com.spring.alarm_todo_list.application.login.service;
 
+import com.spring.alarm_todo_list.application.jwt.redis.repository.RefreshTokenRepository;
 import com.spring.alarm_todo_list.application.login.dto.request.AccountLoginRequestDto;
 import com.spring.alarm_todo_list.application.login.dto.AccountLoginResponseDto;
 import com.spring.alarm_todo_list.domain.account.entity.Account;
@@ -10,8 +11,13 @@ import com.spring.alarm_todo_list.exception.AlarmTodoListException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@Transactional
 class LoginServiceTest {
 
     @Autowired
@@ -32,9 +39,12 @@ class LoginServiceTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @MockBean
+    private RefreshTokenRepository refreshTokenRepository;
+
     @BeforeEach
     public void clear() {
-        accountRepository.deleteAllInBatch();
+        accountRepository.deleteAll();
     }
 
     private Account createAccount(String rawPassword) {
