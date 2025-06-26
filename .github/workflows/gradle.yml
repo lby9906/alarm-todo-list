@@ -2,9 +2,9 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ "master" , "ci/*"]
+    branches: [ "master" , "ci/*", "feature/*"]
   pull_request:
-    branches: [ "master" , "ci/*"]
+    branches: [ "master" , "ci/*", "feature/*"]
 
 jobs:
   build:
@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
+      pull-requests: write
 
     env:
       MYSQL_URL: ${{secrets.MYSQL_URL}}
@@ -40,3 +41,19 @@ jobs:
 
     - name: Build with Gradle Wrapper
       run: ./gradlew build
+
+  auto-merge:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && startsWith(github.head_ref, 'feature/')
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Auto merge PR when conditions met
+        uses: pascalgn/automerge-action@v0.15.3
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        with:
+          mergeMethod: squash
+          title: Automatic merge by CI/CD
