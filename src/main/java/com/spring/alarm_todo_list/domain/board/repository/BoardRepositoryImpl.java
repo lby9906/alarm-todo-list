@@ -31,7 +31,7 @@ public class BoardRepositoryImpl implements BoardTodoQueryDslRepository {
     }
 
     @Override
-    public List<Board> findAllSearchByBoardTitleAndBoardDateAndBoardContentAndAccountId(BoardSearchRequest boardSearchRequest ,Long accountId) {
+    public List<Board> findAllByCondition(BoardSearchRequest boardSearchRequest , Long accountId) {
         return jpaQueryFactory
                 .select(board)
                 .from(board)
@@ -40,7 +40,7 @@ public class BoardRepositoryImpl implements BoardTodoQueryDslRepository {
                         likeTitle(boardSearchRequest.getBoardTitle()),
                         likeContent(boardSearchRequest.getBoardContent())
                         ,eqAccountId(accountId))
-                .offset((boardSearchRequest.getPage() - 1) * boardSearchRequest.getSize())
+                .offset(Math.max((boardSearchRequest.getPage() - 1),0) * boardSearchRequest.getSize())
                 .limit(boardSearchRequest.getSize())
                 .fetch();
     }

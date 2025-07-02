@@ -1,6 +1,6 @@
 package com.spring.alarm_todo_list.application.board.dto.request;
 
-import com.spring.alarm_todo_list.domain.board.entity.Board;
+import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +18,4 @@ public class BoardSearchRequest {
     private long page;
     private long size;
 
-    public static BoardSearchRequest from(Board board, long page, long size) {
-        return new BoardSearchRequest(board.getTitle(), board.getBoardDate(), board.getContent(), page, size);
-    }
 }

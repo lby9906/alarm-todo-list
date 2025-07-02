@@ -106,20 +106,21 @@ class BoardReadServiceTest {
         Account savedAccount = createAccount();
         AccountInfo accountInfo = AccountInfo.from(savedAccount);
 
-        Board board = createBoard(
+        createBoard(
                 "test제목",
                 "test내용",
                 LocalDate.of(2025, 05, 30),
                 LocalTime.of(23, 11),
                 BoardType.TODO,
                 savedAccount);
-        BoardSearchRequest boardSearchRequest = BoardSearchRequest.from(board, 1, 10);
+        BoardSearchRequest boardSearchRequest = new BoardSearchRequest("test제목", LocalDate.of(2025, 05, 30),
+                "test내용", 1, 10);
 
         //when
         boardReadService.findAll(accountInfo, boardSearchRequest);
 
         //then
-        List<Board> search = boardRepository.findAllSearchByBoardTitleAndBoardDateAndBoardContentAndAccountId(
+        List<Board> search = boardRepository.findAllByCondition(
                 boardSearchRequest, accountInfo.getId());
 
         assertThat(search).hasSize(1);

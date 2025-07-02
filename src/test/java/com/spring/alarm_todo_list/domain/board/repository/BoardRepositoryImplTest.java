@@ -130,7 +130,7 @@ class BoardRepositoryImplTest {
         //when
         BoardSearchRequest boardSearchRequest = new BoardSearchRequest(board.getTitle(), board.getBoardDate(), board.getContent(), 1, 10);
 
-        List<Board> search = boardRepositoryImpl.findAllSearchByBoardTitleAndBoardDateAndBoardContentAndAccountId(
+        List<Board> search = boardRepositoryImpl.findAllByCondition(
                 boardSearchRequest, account.getId());
 
         //then
@@ -161,7 +161,7 @@ class BoardRepositoryImplTest {
         //when
         BoardSearchRequest boardSearchRequest = new BoardSearchRequest(board.getTitle(), board.getBoardDate(), board.getContent(), 1, 10);
 
-        List<Board> search = boardRepositoryImpl.findAllSearchByBoardTitleAndBoardDateAndBoardContentAndAccountId(
+        List<Board> search = boardRepositoryImpl.findAllByCondition(
                 boardSearchRequest, account.getId());
 
         //then
@@ -191,7 +191,7 @@ class BoardRepositoryImplTest {
         //when
         BoardSearchRequest boardSearchRequest = new BoardSearchRequest(board.getTitle(), board.getBoardDate(), board.getContent(), 1, 10);
 
-        List<Board> search = boardRepositoryImpl.findAllSearchByBoardTitleAndBoardDateAndBoardContentAndAccountId(
+        List<Board> search = boardRepositoryImpl.findAllByCondition(
                 boardSearchRequest, account.getId());
 
         //then
@@ -221,7 +221,7 @@ class BoardRepositoryImplTest {
         //when
         BoardSearchRequest boardSearchRequest = new BoardSearchRequest(board.getTitle(), board.getBoardDate(), board.getContent(), 1, 10);
 
-        List<Board> search = boardRepositoryImpl.findAllSearchByBoardTitleAndBoardDateAndBoardContentAndAccountId(
+        List<Board> search = boardRepositoryImpl.findAllByCondition(
                 boardSearchRequest, account.getId());
 
         //then
@@ -251,7 +251,7 @@ class BoardRepositoryImplTest {
         //when
         BoardSearchRequest boardSearchRequest = new BoardSearchRequest("둥이", board.getBoardDate(), board.getContent(), 1, 10);
 
-        List<Board> search = boardRepositoryImpl.findAllSearchByBoardTitleAndBoardDateAndBoardContentAndAccountId(
+        List<Board> search = boardRepositoryImpl.findAllByCondition(
                 boardSearchRequest, account.getId());
 
         //then
@@ -278,7 +278,7 @@ class BoardRepositoryImplTest {
         //when
         BoardSearchRequest boardSearchRequest = new BoardSearchRequest(board.getTitle(), board.getBoardDate(), "둥이", 1, 10);
 
-        List<Board> search = boardRepositoryImpl.findAllSearchByBoardTitleAndBoardDateAndBoardContentAndAccountId(
+        List<Board> search = boardRepositoryImpl.findAllByCondition(
                 boardSearchRequest, account.getId());
 
         //then
@@ -305,7 +305,7 @@ class BoardRepositoryImplTest {
         //when
         BoardSearchRequest boardSearchRequest = new BoardSearchRequest(board.getTitle(), LocalDate.of(2025,05,30), board.getContent(), 1, 10);
 
-        List<Board> search = boardRepositoryImpl.findAllSearchByBoardTitleAndBoardDateAndBoardContentAndAccountId(
+        List<Board> search = boardRepositoryImpl.findAllByCondition(
                 boardSearchRequest, account.getId());
 
         //then

@@ -5,12 +5,11 @@ import com.spring.alarm_todo_list.domain.board.entity.Board;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 public interface BoardTodoQueryDslRepository {
     List<Board> findAllByBoardDateAndAccountId(Long accountId, LocalDate localDate);
 
-    List<Board> findAllSearchByBoardTitleAndBoardDateAndBoardContentAndAccountId(BoardSearchRequest boardSearchRequest,Long accountId);
+    List<Board> findAllByCondition(BoardSearchRequest boardSearchRequest, Long accountId);
 
     Long countByBoard(BoardSearchRequest boardSearchRequest);
 }
