@@ -5,6 +5,8 @@ on:
     branches: [ "master" , "ci/*", "feature/*"]
   pull_request:
     branches: [ "master" , "ci/*", "feature/*"]
+  merge_group:
+  workflow_dispatch:
 
 jobs:
   build:
