@@ -2,6 +2,7 @@ package com.spring.alarm_todo_list.application.board.service;
 
 import com.spring.alarm_todo_list.application.account.dto.request.AccountInfo;
 import com.spring.alarm_todo_list.application.board.dto.request.BoardRequest;
+import com.spring.alarm_todo_list.application.board.dto.request.BoardTypeUpdateRequest;
 import com.spring.alarm_todo_list.application.board.dto.request.BoardUpdateRequest;
 import com.spring.alarm_todo_list.domain.account.entity.Account;
 import com.spring.alarm_todo_list.domain.account.repository.AccountRepository;
@@ -43,5 +44,18 @@ public class BoardWriteService {
 
         boardRepository.save(board);
         return "일정 수정 성공";
+    }
+
+    public String typeUpdate(AccountInfo accountInfo, Long boardId, BoardTypeUpdateRequest boardTypeUpdateRequest) {
+        Account account = accountRepository.findById(accountInfo.getId()).orElseThrow(
+                () -> new AlarmTodoListException(ErrorCode.NOT_FOUND_ACCOUNT));
+
+        Board board = boardRepository.findByIdAndAccountId(boardId, account.getId()).orElseThrow(
+                () -> new AlarmTodoListException(ErrorCode.NOT_FOUND_ACCOUNT_REGISTER_BOARD));
+
+        board.typeUpdate(boardTypeUpdateRequest.getBoardType());
+
+        boardRepository.save(board);
+        return "일정 상태값 변경 성공";
     }
 }
