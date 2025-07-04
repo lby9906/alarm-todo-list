@@ -45,6 +45,7 @@ jobs:
       run: ./gradlew build
 
   auto-merge:
+    name: auto-merge (pull_request)
     needs: build
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request' && github.base_ref == 'master' && startsWith(github.head_ref, 'feature/')
