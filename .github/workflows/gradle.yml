@@ -56,9 +56,6 @@ jobs:
 
       - name: Auto merge PR when conditions met
         if: github.base_ref == 'master' && startsWith(github.head_ref, 'feature/')
-        uses: pascalgn/automerge-action@v0.15.3
+        uses: pascalgn/automerge-action@v0.16.4
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        with:
-          mergeMethod: squash
-          title: Automatic merge by CI/CD
