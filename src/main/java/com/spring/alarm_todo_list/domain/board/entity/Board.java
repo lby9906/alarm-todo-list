@@ -44,4 +44,8 @@ public class Board extends BaseEntity {
         this.boardDate = boardDate;
         this.boardTime = boardTime;
     }
+
+    public void typeUpdate(BoardType boardType) {
+        this.boardType = boardType;
+    }
 }

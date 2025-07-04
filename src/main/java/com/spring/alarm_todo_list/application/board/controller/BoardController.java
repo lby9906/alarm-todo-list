@@ -2,17 +2,19 @@ package com.spring.alarm_todo_list.application.board.controller;
 
 import com.spring.alarm_todo_list.application.account.dto.request.AccountInfo;
 import com.spring.alarm_todo_list.application.board.dto.request.BoardRequest;
+import com.spring.alarm_todo_list.application.board.dto.request.BoardSearchRequest;
+import com.spring.alarm_todo_list.application.board.dto.request.BoardTypeUpdateRequest;
 import com.spring.alarm_todo_list.application.board.dto.request.BoardUpdateRequest;
-import com.spring.alarm_todo_list.application.board.dto.response.BoardResponse;
+import com.spring.alarm_todo_list.application.board.dto.response.BoardSearchListResponse;
 import com.spring.alarm_todo_list.application.board.service.BoardReadService;
 import com.spring.alarm_todo_list.application.board.service.BoardWriteService;
 import com.spring.alarm_todo_list.config.LoginUser;
-import com.spring.alarm_todo_list.domain.account.entity.Account;
+import com.spring.alarm_todo_list.util.PaginationResponse;
+import com.spring.alarm_todo_list.domain.board.enums.BoardType;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 
 @RestController
 @AllArgsConstructor
@@ -28,12 +30,17 @@ public class BoardController {
     }
 
     @GetMapping
-    public BoardResponse findAll(@LoginUser AccountInfo accountInfo, @RequestParam(required = false) LocalDate boardDate) {
-        return boardReadService.findAll(accountInfo, boardDate);
+    public PaginationResponse<BoardSearchListResponse> findAll(@LoginUser AccountInfo accountInfo, @ModelAttribute BoardSearchRequest boardSearchRequest) {
+        return boardReadService.findAll(accountInfo, boardSearchRequest);
     }
 
     @PutMapping("/{boardId}")
     public String update(@LoginUser AccountInfo accountInfo, @PathVariable Long boardId, @RequestBody @Valid BoardUpdateRequest boardUpdateRequest) {
         return boardWriteService.update(accountInfo, boardId, boardUpdateRequest);
+    }
+
+    @PutMapping("/update/{boardId}")
+    public String typeUpdate(@LoginUser AccountInfo accountInfo, @PathVariable Long boardId, @RequestBody @Valid BoardTypeUpdateRequest boardTypeUpdateRequest) {
+        return boardWriteService.typeUpdate(accountInfo, boardId, boardTypeUpdateRequest);
     }
 }
