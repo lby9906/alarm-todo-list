@@ -47,7 +47,8 @@ jobs:
   auto-merge:
     needs: build
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request' && startsWith(github.head_ref, 'feature/')
+    if: (github.event_name == 'pull_request' || github.event_name == 'merge_group') && startsWith(github.head_ref, 'feature/')
+
 
     steps:
       - uses: actions/checkout@v4
