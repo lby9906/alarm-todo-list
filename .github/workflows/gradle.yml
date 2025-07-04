@@ -10,7 +10,7 @@ on:
 
 jobs:
   build:
-
+    name: build
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -48,14 +48,13 @@ jobs:
     name: auto-merge (pull_request)
     needs: build
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'pull_request' && github.event.pull_request.base.ref == 'master' && startsWith(github.event.pull_request.head.ref, 'feature/')
 
 
     steps:
       - uses: actions/checkout@v4
 
       - name: Auto merge PR when conditions met
-        if: github.base_ref == 'master' && startsWith(github.head_ref, 'feature/')
         uses: pascalgn/automerge-action@v0.16.4
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
