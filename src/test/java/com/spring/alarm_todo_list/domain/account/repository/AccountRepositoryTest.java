@@ -18,12 +18,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @DataJpaTest
+@Import(QuerydslConfig.class)
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class AccountRepositoryTest {
 
     @Autowired
     private AccountRepository accountRepository;
-
 
     @BeforeEach
     public void clear() {

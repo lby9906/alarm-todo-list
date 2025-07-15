@@ -95,11 +95,11 @@ class BoardWriteServiceTest {
 
         //when
         AlarmTodoListException exception = assertThrows(AlarmTodoListException.class,
-                () -> boardWriteService.create(null, boardRequest));
+                () -> boardWriteService.create(-1L, boardRequest));
 
         //then
         assertThat(exception).isInstanceOf(AlarmTodoListException.class);
-        assertThat(exception.getErrorCode().getMessage()).isEqualTo("회원 정보를 찾을 수 없습니다.");
+        assertThat(exception.getErrorCode().getMessage()).isEqualTo("회원을 찾을 수 없습니다.");
     }
 
     @Test
