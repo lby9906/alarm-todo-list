@@ -1,8 +1,6 @@
 name: Java CI with Gradle
 
 on:
-  push:
-    branches: [ "master" , "ci/*", "feature/*"]
   pull_request:
     branches: [ "master" , "ci/*", "feature/*"]
   merge_group:
