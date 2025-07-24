@@ -4,6 +4,7 @@ on:
   push:
     branches: [ "master" , "ci/*", "feature/*"]
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review, labeled]
     branches: [ "master" , "ci/*", "feature/*"]
   merge_group:
   workflow_dispatch:
@@ -58,3 +59,5 @@ jobs:
         uses: pascalgn/automerge-action@v0.16.4
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          MERGE_LABELS: "automerge"
+          MERGE_METHOD: "squash"
