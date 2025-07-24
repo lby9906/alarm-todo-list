@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.spring.alarm_todo_list.application.account.dto.request.AccountInfo;
 import com.spring.alarm_todo_list.application.board.dto.request.BoardSearchRequest;
+import com.spring.alarm_todo_list.application.board.dto.request.BoardTypeUpdateRequest;
 import com.spring.alarm_todo_list.application.board.dto.request.BoardUpdateRequest;
 import com.spring.alarm_todo_list.application.board.dto.response.BoardSearchListResponse;
 import com.spring.alarm_todo_list.application.board.service.BoardReadService;
@@ -26,6 +27,7 @@ import java.time.LocalTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.given;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -33,8 +35,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ExtendWith(MockitoExtension.class)
 class BoardControllerTest {
@@ -187,5 +188,29 @@ class BoardControllerTest {
                         .value(containsString("test내용")))
                 .andExpect(jsonPath("$.contents[0].boardDate")
                         .value(containsString(String.valueOf(LocalDate.of(2025,05,30)))));
+    }
+
+    @Test
+    @DisplayName("Todo의 상태 값이 유효하면 변경이 정상적으로 처리된다.")
+    public void successBoardTypeUpdateTodo() throws Exception {
+        //given
+        Long boardId = 1L;
+
+        when(boardWriteService.typeUpdate(any(AccountInfo.class), eq(boardId), any(BoardTypeUpdateRequest.class)))
+                        .thenReturn("일정 상태값 변경 성공");
+
+        String jsonRequest = """
+                {
+                    "boardType": "DONE"
+                }
+                """;
+
+        //when + then
+        mockMvc.perform(put("/board/update/{boardId}", boardId)
+                .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(jsonRequest))
+                .andExpect(status().isOk())
+                .andExpect(content().string("일정 상태값 변경 성공"));
     }
 }

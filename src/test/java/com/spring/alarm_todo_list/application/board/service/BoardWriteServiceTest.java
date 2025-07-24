@@ -2,6 +2,7 @@ package com.spring.alarm_todo_list.application.board.service;
 
 import com.spring.alarm_todo_list.application.account.dto.request.AccountInfo;
 import com.spring.alarm_todo_list.application.board.dto.request.BoardRequest;
+import com.spring.alarm_todo_list.application.board.dto.request.BoardTypeUpdateRequest;
 import com.spring.alarm_todo_list.application.board.dto.request.BoardUpdateRequest;
 import com.spring.alarm_todo_list.domain.account.entity.Account;
 import com.spring.alarm_todo_list.domain.account.enums.LoginType;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -234,5 +236,62 @@ class BoardWriteServiceTest {
         Account account = board.getAccount();
         assertThat(accountInfo.getId()).isEqualTo(account.getId());
         assertThat(board.getBoardTime()).isEqualTo(boardUpdateRequest.getBoardTime());
+    }
+
+    @Test
+    @DisplayName("존재하는 회원이 자신이 등록한 Todo 상태 값 변경 시 정상적으로 수정된다.")
+    public void existAccountBoardTypeChange() {
+        //given
+        Account savedAccount = createAccount();
+        AccountInfo accountInfo = AccountInfo.from(savedAccount);
+        Board savedBoard = createBoard(savedAccount);
+
+        BoardTypeUpdateRequest boardTypeUpdateRequest = new BoardTypeUpdateRequest(BoardType.DONE);
+
+        //when
+        boardWriteService.typeUpdate(accountInfo, savedBoard.getId(), boardTypeUpdateRequest);
+
+        //then
+        Board board = boardRepository.findById(savedBoard.getId()).orElseThrow();
+        Account account = board.getAccount();
+        assertThat(accountInfo.getId()).isEqualTo(account.getId());
+        assertThat(board.getBoardType()).isEqualTo(boardTypeUpdateRequest.getBoardType());
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 회원이 Todo 상태 값 변경 시 예외가 발생한다.")
+    public void notExistAccountBoardTypeUpdateTodoException() {
+        //given
+        AccountInfo accountInfo = new AccountInfo(-1L, "test@test.com", "test");
+
+        BoardTypeUpdateRequest boardTypeUpdateRequest = new BoardTypeUpdateRequest(BoardType.DONE);
+
+        //when
+        AlarmTodoListException exception = assertThrows(AlarmTodoListException.class,
+                () -> boardWriteService.typeUpdate(accountInfo, 1L, boardTypeUpdateRequest));
+
+        //then
+        assertThat(exception).isInstanceOf(AlarmTodoListException.class);
+        assertThat(exception.getErrorCode().getMessage()).isEqualTo("회원을 찾을 수 없습니다.");
+
+    }
+
+    @Test
+    @DisplayName("존재하는 회원이 등록하지 않은 Todo의 상태 값 변경 시 예외가 발생한다.")
+    public void notRegisterAccountBoardTypeUpdateException() {
+        //given
+        Account savedAccount = createAccount();
+        AccountInfo accountInfo = AccountInfo.from(savedAccount);
+        Board savedBoard = createBoard(savedAccount);
+
+        BoardTypeUpdateRequest boardTypeUpdateRequest = new BoardTypeUpdateRequest(BoardType.DONE);
+
+        //when
+        AlarmTodoListException exception = assertThrows(AlarmTodoListException.class,
+                () -> boardWriteService.typeUpdate(accountInfo, -1L, boardTypeUpdateRequest));
+
+        //then
+        assertThat(exception).isInstanceOf(AlarmTodoListException.class);
+        assertThat(exception.getErrorCode().getMessage()).isEqualTo("회원이 등록한 일정을 찾을 수 없습니다.");
     }
 }
