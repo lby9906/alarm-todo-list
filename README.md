@@ -38,5 +38,13 @@
     - Todo 조회: 특정 날짜로 상세 조회 / 일정 전체 조회, 일정 검색
     - Todo 상태 변경: 기본값 TODO <-> DONE 상태 변경
 
+- CI
+    - GitHub Actions를 이용한 CI 파이프라인 구축      
+
 ## 🗒️ API 명세서
 > https://documenter.getpostman.com/view/25131614/2sB2cbaJe9
+
+
+## 🚨 트러블 슈팅
+> https://scarlet-lime-d5d.notion.site/Enum-Valid-225883b537e28004a98aee130208b8a7?source=copy_link
+> https://scarlet-lime-d5d.notion.site/GitHub-Actions-CI-CD-24f883b537e28000b11ff1e88a410100?source=copy_link
